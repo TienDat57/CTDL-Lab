@@ -5,9 +5,40 @@
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
+#include <cstdlib>
+#include <ctime>
 
 using namespace std;
 
+void swap(int &a, int &b){
+    int c = a;
+    a = b;
+    b = c;
+}
+
+int index(int *a, int low, int high, int &cc){
+    int pi = a[high];
+    int l = low;
+    int r = high - 1;
+    while (true){
+        while ((++cc && l <= r) && (++cc && a[l] < pi)) l++;
+        while ((++cc && l <= r) && (++cc && a[r] > pi)) r--;
+        if (++cc && l >= r) break;
+        swap(a[l],a[r]);
+        l++;
+        r--;
+    }
+    swap(a[l], a[high]);
+    return l;
+}
+
+void QuickSort(int*a, int low, int high, int &count_compare){
+    if (low < high){
+        int i = index(a, low, high, count_compare);
+        QuickSort(a, low, i - 1, count_compare);
+        QuickSort(a, i + 1, high, count_compare);
+    }
+}
 
 void Output_res_a(string para, double time, int comp) {
     int mode = 0;
@@ -18,13 +49,13 @@ void Output_res_a(string para, double time, int comp) {
     switch (mode)
     {
     case 1:
-        cout << "Running time: " << time << endl;
+        cout << "Running time: " << time << 's' << endl;
         break;
     case 2:
         cout << "Comparisions: " << comp << endl;
         break;
     case 3:
-        cout << "Running time: " << time << endl;
+        cout << "Running time: " << time << 's' << endl;
         cout << "Comparisions: " << comp << endl;
         break;
     }
@@ -100,7 +131,7 @@ void solveAlgoritm(string algo, int* a, int n, double& time, int& cc) {
     case 8:
         cout << "Algorithm: Quick Sort" << endl;
         start = clock();
-        // ...
+        QuickSort(a, 0, n-1, cc);
         end = clock();
         time = double(end - start) / CLOCKS_PER_SEC;
         break;
@@ -140,15 +171,14 @@ void _cmd_1(char* Algorithm, string given_Input, string Output_parameter)
         int n;
         fi >> n;
         int* a = new int[n];
-        for (int i = 0; i < n; i++) fi >> a[i];
-
-       
+        for (int i = 0; i < n; i++) a[i] = rand();
         double time = 0;
         int count_compare = 0;
         solveAlgoritm(algo, a, n, time, count_compare);
 
         cout << "Input file: " << given_Input << endl;
         cout << "Input size: " << n << endl;
+        Output_res_a(Output_parameter, time, count_compare);
 
         if (fo.fail()) {
             cout << "Cannot open output.txt file !" << endl;
@@ -158,7 +188,6 @@ void _cmd_1(char* Algorithm, string given_Input, string Output_parameter)
                 fo << a[i] << " ";
             }
         }
-        Output_res_a(Output_parameter, time, count_compare);
         fi.close();
         fo.close();
     }
@@ -226,6 +255,7 @@ void _comparasion(char* algorithm1, char* algorithm2, char* s1, char* s2 = NULL)
 
 int main(int argc, char* argv[])
 {
+    srand(time(NULL));
     if (argc < 5)
         cout << "Invalid command - Too few arguments !" << endl;
     else
