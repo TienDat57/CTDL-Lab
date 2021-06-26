@@ -1,9 +1,10 @@
 #include <iostream>
 using namespace std;
 
-int main()
-{
-    cout <<"hello dat dep trai";
+int main(){
+    int n;
+    
+    cout << "hello";
     
     system("pause");
     return 0;
