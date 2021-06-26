@@ -1,12 +1,56 @@
 #include <iostream>
 #include <string>
 #include <cstring>
+#include <fstream>
+#include"dataGenerator.h"
 
 using namespace std;
 
+enum PARAMETER{
+    -comp = 1
+}
+
+void Ouput_res(char* para, double time, int comp){
+    switch (para)
+    {
+        case "-comp":
+    }
+}
+
+void solveAlgoritm(string algo, int*a , int n){
+   // cout << 
+}
+
 void _cmd_1(char* Algorithm, string given_Input, string Output_parameter)
 {
-    cout << "loading command line 1..." << endl;
+    ifstream fi(given_Input, ios::in);
+    ofstream fo("output.txt", ios::out);
+    if (fi.fail()){
+        cout << "Cannot open " << given_Input << " file !" << endl;
+    }
+    else {
+        int n;
+        fi >> n;
+        int *a=new int[n];
+        for (int i=0; i<n; i++) fi >> a[i];
+
+        string algo(Algorithm);
+        solveAlgoritm(algo, a, n);
+    
+        if (fo.fail()){
+            cout << "Cannot open output.txt file !" << endl;
+        }
+        else {
+            for (int i=0;i<n;i++){
+                fo << a[i] << " ";
+            }
+        }
+        fi.close();
+
+    }
+        
+    
+    
 }
 
 void _cmd_2(char* Algorithm, int input_size, string input_order, string Output_parameter)
@@ -79,10 +123,15 @@ int main(int argc, char* argv[])
             cout << "Invalid command - Too many arguments !" << endl;
         else
         {
-            if (strcmp(argv[1], "-a") == 0)
-                _algorithm(argv[2], argv[3], argv[4], argv[5]);
-            else
+            if (strcmp(argv[1], "-a") == 0){
+                cout << "ALGORITHM MODE" << endl;
+                _algorithm(argv[2], argv[3], argv[4], argv[5]); 
+            }
+
+            else {
+                cout << "COMPARE MODE" << endl;
                 _comparasion(argv[2], argv[3], argv[4], argv[5]);
+            }
         }
     }
     return 0;
