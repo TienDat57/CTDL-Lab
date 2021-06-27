@@ -7,6 +7,8 @@
 #include <stdlib.h>
 #include <cstdlib>
 #include <ctime>
+#include <vector>
+#include <algorithm>
 
 using namespace std;
 
@@ -38,6 +40,30 @@ void QuickSort(int*a, int low, int high, int &count_compare){
         QuickSort(a, low, i - 1, count_compare);
         QuickSort(a, i + 1, high, count_compare);
     }
+}
+
+void CountingSort(int *a, int n, int &count_compare){
+    int max = *max_element(a, a+n);
+    int min = *min_element(a, a+n);
+    vector <int> count(max - min + 1);
+    vector <int> res(n);
+    for (int i = 0; ++count_compare && i < n; i++){
+        count[a[i] - min]++;
+    }
+    for (int i = 1; ++count_compare && i < count.size(); i++){
+        count[i] += count[i-1]; 
+    }
+    for (int i = n - 1; ++count_compare && i >= 0; i--){
+        res[count[a[i] - min] -1] = a[i];
+        count[a[i] - min]--;
+    }
+    for (int i = 0; ++count_compare && i < n ; i++){
+        a[i] = res[i];
+    }
+}
+
+void FlashSort(int*a, int n, int &count_compare){
+
 }
 
 void Output_res_a(string para, double time, int comp) {
@@ -138,7 +164,7 @@ void solveAlgoritm(string algo, int* a, int n, double& time, int& cc) {
     case 9:
         cout << "Algorithm: Counting Sort" << endl;
         start = clock();
-        // ...
+        CountingSort(a, n, cc);
         end = clock();
         time = double(end - start) / CLOCKS_PER_SEC;
         break;
@@ -171,7 +197,8 @@ void _cmd_1(char* Algorithm, string given_Input, string Output_parameter)
         int n;
         fi >> n;
         int* a = new int[n];
-        for (int i = 0; i < n; i++) a[i] = rand();
+        for (int i = 0; i < n; i++) fi >> a[i];
+        
         double time = 0;
         int count_compare = 0;
         solveAlgoritm(algo, a, n, time, count_compare);
@@ -184,9 +211,7 @@ void _cmd_1(char* Algorithm, string given_Input, string Output_parameter)
             cout << "Cannot open output.txt file !" << endl;
         }
         else {
-            for (int i = 0; i < n; i++) {
-                fo << a[i] << " ";
-            }
+            for (int i = 0; i < n; i++) fo << a[i] << " ";
         }
         fi.close();
         fo.close();
