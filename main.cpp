@@ -11,6 +11,7 @@
 
 using namespace std;
 
+// Sorting algorithm --------------------------------------------------------------------------------------
 void swap(int &a, int &b){
     int c = a;
     a = b;
@@ -120,6 +121,7 @@ void FlashSort(int*a, int n, int &count_compare){
 	}
 }
 
+// Utility Functions --------------------------------------------------------------------------------------
 void generate_input_Order(int *a, int n, string input_Order){
     int mode = -1;
     if (input_Order == "-rand") mode = 0;
@@ -248,37 +250,43 @@ void solveAlgoritm(string algo, int* a, int n, double& time, int& cc) {
     }
 }
 
+void WriteFile(string file_name, int* a, int n){
+    ofstream f (file_name, ios::out);
+    if (f.fail()) cout << "Cannot open " << file_name << " file !" << endl;
+    else {
+        f << n << endl;
+        for (int i = 0; i < n; i++) f << a[i] << " ";
+        f.close();
+    }
+}
+
+int* ReadFile(string file_name, int &n){
+    ifstream f (file_name, ios::in);
+    if (f.fail()) cout << "Cannot open " << file_name << " file" << endl;
+    else{
+        f >> n;
+        int *a = new int[n];
+        for (int i = 0; i < n; i++) f >> a[i];
+        f.close();
+        return a;
+    }   
+}
+
+// Command line -------------------------------------------------------------------------------------------
 void _cmd_1(char* Algorithm, string given_Input, string Output_parameter)
 {
-    ifstream fi(given_Input, ios::in);
-    ofstream fo("output.txt", ios::out);
-    if (fi.fail()) {
-        cout << "Cannot open " << given_Input << " file !" << endl;
-    }
-    else {
-        string algo(Algorithm);
-        int n;
-        fi >> n;
-        int* a = new int[n];
-        for (int i = 0; i < n; i++) fi >> a[i];
-        
-        double time = 0;
-        int count_compare = 0;
-        solveAlgoritm(algo, a, n, time, count_compare);
+    int n;
+    int *a = ReadFile(given_Input, n);
+    string algo(Algorithm);
+    double time = 0;
+    int count_compare = 0;
+    solveAlgoritm(algo, a, n, time, count_compare);
 
-        cout << "Input file: " << given_Input << endl;
-        cout << "Input size: " << n << endl;
-        Output_res_algorithm(Output_parameter, time, count_compare);
+    cout << "Input file: " << given_Input << endl;
+    cout << "Input size: " << n << endl;
+    Output_res_algorithm(Output_parameter, time, count_compare);
 
-        if (fo.fail()) {
-            cout << "Cannot open output.txt file !" << endl;
-        }
-        else {
-            for (int i = 0; i < n; i++) fo << a[i] << " ";
-        }
-        fi.close();
-        fo.close();
-    }
+    WriteFile("output.txt", a, n);
 }
 
 void _cmd_2(char* Algorithm, int input_size, string input_order, string Output_parameter)
@@ -289,12 +297,17 @@ void _cmd_2(char* Algorithm, int input_size, string input_order, string Output_p
     int n = input_size;
     int *a = new int[n];
     generate_input_Order(a, n, input_order);
+    WriteFile("input.txt", a, n);
     solveAlgoritm(algo, a, n, time, count_compare);
+    WriteFile("output.txt", a, n);
     cout << "Input size: " << input_size << endl;
-    cout << "Input order: " << input_order << endl;
+    cout << "Input order: ";
+    if (input_order == "-rand") cout << "randomized data" << endl;
+    if (input_order == "-nsorted") cout << "nearly sorted data" << endl;
+    if (input_order == "-sorted") cout << "sorted data" << endl;
+    if (input_order == "-rev") cout << "reverse sorted data" << endl;
     Output_res_algorithm(Output_parameter, time, count_compare);
     delete [] a;
-
 }
 
 void _cmd_3(char* Algorithm, int input_size, string Ouput_parameter)
@@ -352,6 +365,7 @@ void _comparasion(char* algorithm1, char* algorithm2, char* s1, char* s2 = NULL)
     }
 }
 
+// Main ---------------------------------------------------------------------------------------------------
 int main(int argc, char* argv[])
 {
     if (argc < 5)
