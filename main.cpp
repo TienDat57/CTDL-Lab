@@ -12,78 +12,76 @@
 using namespace std;
 
 // Sorting algorithm --------------------------------------------------------------------------------------
-void swap(int &a, int &b){
-    int c = a;
-    a = b;
-    b = c;
+void swap(int* a, int* b)
+{
+    int c = *a;
+    *a = *b;
+    *b = c;
 }
 
-int index(int *a, int low, int high, long long &cc){
-    int pi = a[high];
-    int l = low;
-    int r = high - 1;
-    while (true){
-        while ((++cc && l <= r) && (++cc && a[l] < pi)) l++;
-        while ((++cc && l <= r) && (++cc && a[r] > pi)) r--;
-        if (++cc && l >= r) break;
-        swap(a[l],a[r]);
-        l++;
-        r--;
+int index(int* a, int low, int high, long long& cc) {
+    int p = a[high]; 
+    int i = low; 
+
+    for (int j = low; j <= high - 1; j++)
+    {
+        if (a[j] < p) swap(&a[i++], &a[j]);
     }
-    swap(a[l], a[high]);
-    return l;
+    swap(&a[i], &a[high]);
+    return i;
 }
 
-void QuickSort(int*a, int low, int high, long long &count_compare){
-    if (low < high){
-        int i = index(a, low, high, count_compare);
-        QuickSort(a, low, i - 1, count_compare);
-        QuickSort(a, i + 1, high, count_compare);
+void QuickSort(int* a, int low, int high, long long& count_compare) {
+    if (low < high) {
+        int pi = index(a, low, high, count_compare);
+        QuickSort(a, low, pi - 1, count_compare);
+        QuickSort(a, pi + 1, high, count_compare);
     }
 }
 
-void CountingSort(int *a, int n, long long &count_compare){
-    int max = *max_element(a, a+n);
-    int min = *min_element(a, a+n);
+void CountingSort(int* a, int n, long long& count_compare) {
+    int max = *max_element(a, a + n);
+    int min = *min_element(a, a + n);
     vector <int> count(max - min + 1);
     vector <int> res(n);
-    for (int i = 0; ++count_compare && i < n; i++){
+    for (int i = 0; ++count_compare && i < n; i++) {
         count[a[i] - min]++;
     }
-    for (int i = 1; ++count_compare && i < count.size(); i++){
-        count[i] += count[i - 1]; 
+    for (int i = 1; ++count_compare && i < count.size(); i++) {
+        count[i] += count[i - 1];
     }
-    for (int i = n - 1; ++count_compare && i >= 0; i--){
-        res[count[a[i] - min] -1] = a[i];
+    for (int i = n - 1; ++count_compare && i >= 0; i--) {
+        res[count[a[i] - min] - 1] = a[i];
         count[a[i] - min]--;
     }
-    for (int i = 0; ++count_compare && i < n ; i++){
+    for (int i = 0; ++count_compare && i < n; i++) {
         a[i] = res[i];
     }
 }
 
-void FlashSort(int*a, int n, long long & count_compare){
-    int minVal = *min_element(a, a+n);
-    int maxVal = *max_element(a, a+n);
+void FlashSort(int* a, int n, long long& count_compare) {
+    int minVal = *min_element(a, a + n);
+    int maxVal = *max_element(a, a + n);
     if (++count_compare && maxVal == minVal) return;
     int maxIndex = 0;
-    int bucket = int(0.45*n);
+    int bucket = int(0.45 * n);
 
     vector <int> L(bucket);
 
-    for (int i = 0;++count_compare && i < n; i++){
-        if (++count_compare && a[i] == maxVal){
+    for (int i = 0; ++count_compare && i < n; i++) {
+        if (++count_compare && a[i] == maxVal) {
             maxIndex = i;
             break;
         }
     }
 
-    for (int i = 0; ++count_compare && i < n; i++){
-        int k = int((bucket - 1) * (a[i] - minVal) / (maxVal - minVal));
+    double x = double((bucket - 1) / (a[maxIndex] - minVal));
+    for (int i = 0; ++count_compare && i < n; i++) {
+        int k = int(x * (a[i] - minVal));
         ++L[k];
     }
     // find the last element for each bucket
-    for (int i = 1; ++count_compare && i < bucket; i++ ){
+    for (int i = 1; ++count_compare && i < bucket; i++) {
         L[i] += L[i - 1];
     }
 
@@ -93,15 +91,15 @@ void FlashSort(int*a, int n, long long & count_compare){
     int k = 0;
     int t = 0;
     int j = 0;
-    while (++count_compare && move < n - 1){
-        while (++count_compare && j > L[k] -1){
+    while (++count_compare && move < n - 1) {
+        while (++count_compare && j > L[k] - 1) {
             j++;
-            k = int((bucket - 1) * (a[j] - minVal) / (maxVal - minVal));
+            k = int(x * (a[j] - minVal));
         }
         flash = a[j];
         if (++count_compare && k < 0) break;
-        while (++count_compare && j != L[k]){
-            k = int((bucket - 1) * (a[j] - minVal) / (maxVal - minVal));
+        while (++count_compare && j != L[k]) {
+            k = int(x * (a[j] - minVal));
             hold = a[t = --L[k]];
             a[t] = flash;
             flash = hold;
@@ -109,20 +107,20 @@ void FlashSort(int*a, int n, long long & count_compare){
         }
     }
     // use Insertion Sort
-    int vt, x;
-	for (int i = 1; ++count_compare && i < n; i++) {
-		x = a[i];
-		vt = i;
-		while ((++count_compare && vt > 0) && (++count_compare && x < a[vt - 1])) {
-			a[vt] = a[vt - 1];
-			vt--;
-		}
-		a[vt] = x;
-	}
+    int vt, nam;
+    for (int i = 1; ++count_compare && i < n; i++) {
+        nam = a[i];
+        vt = i;
+        while ((++count_compare && vt > 0) && (++count_compare && nam < a[vt - 1])) {
+            a[vt] = a[vt - 1];
+            vt--;
+        }
+        a[vt] = nam;
+    }
 }
 
 // Utility Functions --------------------------------------------------------------------------------------
-void generate_input_Order(int *a, int n, string input_Order){
+void generate_input_Order(int* a, int n, string input_Order) {
     int mode = -1;
     if (input_Order == "-rand") mode = 0;
     if (input_Order == "-nsorted") mode = 1;
@@ -152,7 +150,7 @@ void Output_res_algorithm(string para, double time, long long comp) {
     }
 }
 
-void solveAlgoritm(string algo, int* a, int n, double& time, long long &cc) {
+void solveAlgoritm(string algo, int* a, int n, double& time, long long& cc) {
     int mode = 0;
     if (algo == "selection-sort") mode = 1;
     if (algo == "insertion-sort") mode = 2;
@@ -222,7 +220,7 @@ void solveAlgoritm(string algo, int* a, int n, double& time, long long &cc) {
     case 8:
         cout << "Algorithm: Quick Sort" << endl;
         start = clock();
-        QuickSort(a, 0, n-1, cc);
+        QuickSort(a, 0, n - 1, cc);
         end = clock();
         time = double(end - start) / CLOCKS_PER_SEC;
         break;
@@ -250,8 +248,8 @@ void solveAlgoritm(string algo, int* a, int n, double& time, long long &cc) {
     }
 }
 
-void WriteFile(string file_name, int* a, int n){
-    ofstream f (file_name, ios::out);
+void WriteFile(string file_name, int* a, int n) {
+    ofstream f(file_name, ios::out);
     if (f.fail()) cout << "Cannot open " << file_name << " file !" << endl;
     else {
         f << n << endl;
@@ -260,24 +258,24 @@ void WriteFile(string file_name, int* a, int n){
     }
 }
 
-int* ReadFile(string file_name, int &n){
+int* ReadFile(string file_name, int& n) {
     ifstream f(file_name, ios::in);
     if (f.fail()) {
         cout << "Cannot open " << file_name << " file" << endl;
         return NULL;
     }
     f >> n;
-    int *a = new int[n];
+    int* a = new int[n];
     for (int i = 0; i < n; i++) f >> a[i];
     f.close();
     return a;
-    
+
 }
 
 // Command line -------------------------------------------------------------------------------------------
-void _cmd_1(char* Algorithm, string given_Input, string Output_parameter){
+void _cmd_1(char* Algorithm, string given_Input, string Output_parameter) {
     int n;
-    int *a = ReadFile(given_Input, n);
+    int* a = ReadFile(given_Input, n);
     string algo(Algorithm);
     double time = 0;
     long long count_compare = 0;
@@ -294,7 +292,7 @@ void _cmd_2(char* Algorithm, int input_size, string input_order, string Output_p
     double time = 0;
     long long count_compare = 0;
     int n = input_size;
-    int *a = new int[n];
+    int* a = new int[n];
     generate_input_Order(a, n, input_order);
     WriteFile("input.txt", a, n);
     solveAlgoritm(algo, a, n, time, count_compare);
@@ -306,7 +304,7 @@ void _cmd_2(char* Algorithm, int input_size, string input_order, string Output_p
     if (input_order == "-sorted") cout << "sorted data" << endl;
     if (input_order == "-rev") cout << "reverse sorted data" << endl;
     Output_res_algorithm(Output_parameter, time, count_compare);
-    delete [] a;
+    delete[] a;
 }
 
 void _cmd_3(char* Algorithm, int input_size, string Ouput_parameter)
