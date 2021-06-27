@@ -12,31 +12,31 @@
 using namespace std;
 
 // Sorting algorithm --------------------------------------------------------------------------------------
-void swap(int* a, int* b)
-{
-    int c = *a;
-    *a = *b;
-    *b = c;
+void swap(int &a, int &b){
+    int c = a;
+    a = b;
+    b = c;
 }
 
-int index(int* a, int low, int high, long long& cc) {
-    int p = a[high]; 
-    int i = low; 
-
-    for (int j = low; j <= high - 1; j++)
-    {
-        if (a[j] < p) swap(&a[i++], &a[j]);
-    }
-    swap(&a[i], &a[high]);
-    return i;
+int index(int *a, int low, int high, long long & count_compare){
+	int pi = a[(high + low) / 2];
+	int l = low;
+	int r = high;
+	while (++count_compare && l <= r){
+		while ((++count_compare && l <= r) && (++count_compare && a[l] < pi)) l++;
+		while ((++count_compare && l <= r) && (++count_compare && a[r] > pi)) r--;
+		if (++count_compare && l <= r) {
+			swap(a[l],a[r]);
+			l++; r--;
+		}
+	}
+	return l;
 }
 
-void QuickSort(int* a, int low, int high, long long& count_compare) {
-    if (low < high) {
-        int pi = index(a, low, high, count_compare);
-        QuickSort(a, low, pi - 1, count_compare);
-        QuickSort(a, pi + 1, high, count_compare);
-    }
+void QuickSort(int* a, int low, int high, long long & count_compare){
+	int pi = index(a, low, high, count_compare);
+	if (++count_compare && low < pi - 1) QuickSort(a, low, pi - 1, count_compare);
+	if (++count_compare && pi < high) QuickSort(a, pi, high, count_compare);
 }
 
 void CountingSort(int* a, int n, long long& count_compare) {
