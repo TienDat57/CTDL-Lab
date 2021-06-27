@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <vector>
 #include <algorithm>
+#include "dataGenerator.h"
 
 using namespace std;
 
@@ -119,7 +120,16 @@ void FlashSort(int*a, int n, int &count_compare){
 	}
 }
 
-void Output_res_a(string para, double time, int comp) {
+void generate_input_Order(int *a, int n, string input_Order){
+    int mode = -1;
+    if (input_Order == "-rand") mode = 0;
+    if (input_Order == "-nsorted") mode = 1;
+    if (input_Order == "-sorted") mode = 2;
+    if (input_Order == "-rev") mode = 3;
+    if (mode != -1) GenerateData(a, n, mode);
+}
+
+void Output_res_algorithm(string para, double time, int comp) {
     int mode = 0;
     if (para == "-time") mode = 1;
     if (para == "-comp") mode = 2;
@@ -258,7 +268,7 @@ void _cmd_1(char* Algorithm, string given_Input, string Output_parameter)
 
         cout << "Input file: " << given_Input << endl;
         cout << "Input size: " << n << endl;
-        Output_res_a(Output_parameter, time, count_compare);
+        Output_res_algorithm(Output_parameter, time, count_compare);
 
         if (fo.fail()) {
             cout << "Cannot open output.txt file !" << endl;
@@ -273,7 +283,18 @@ void _cmd_1(char* Algorithm, string given_Input, string Output_parameter)
 
 void _cmd_2(char* Algorithm, int input_size, string input_order, string Output_parameter)
 {
-    cout << "loading command line 2..." << endl;
+    string algo(Algorithm);
+    double time = 0;
+    int count_compare = 0;
+    int n = input_size;
+    int *a = new int[n];
+    generate_input_Order(a, n, input_order);
+    solveAlgoritm(algo, a, n, time, count_compare);
+    cout << "Input size: " << input_size << endl;
+    cout << "Input order: " << input_order << endl;
+    Output_res_algorithm(Output_parameter, time, count_compare);
+    delete [] a;
+
 }
 
 void _cmd_3(char* Algorithm, int input_size, string Ouput_parameter)
