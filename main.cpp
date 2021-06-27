@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <vector>
 #include <algorithm>
-#include "dataGenerator.h"
+#include "data.h"
 
 using namespace std;
 
@@ -18,7 +18,7 @@ void swap(int &a, int &b){
     b = c;
 }
 
-int index(int *a, int low, int high, int &cc){
+int index(int *a, int low, int high, long long &cc){
     int pi = a[high];
     int l = low;
     int r = high - 1;
@@ -34,7 +34,7 @@ int index(int *a, int low, int high, int &cc){
     return l;
 }
 
-void QuickSort(int*a, int low, int high, int &count_compare){
+void QuickSort(int*a, int low, int high, long long &count_compare){
     if (low < high){
         int i = index(a, low, high, count_compare);
         QuickSort(a, low, i - 1, count_compare);
@@ -42,7 +42,7 @@ void QuickSort(int*a, int low, int high, int &count_compare){
     }
 }
 
-void CountingSort(int *a, int n, int &count_compare){
+void CountingSort(int *a, int n, long long &count_compare){
     int max = *max_element(a, a+n);
     int min = *min_element(a, a+n);
     vector <int> count(max - min + 1);
@@ -62,7 +62,7 @@ void CountingSort(int *a, int n, int &count_compare){
     }
 }
 
-void FlashSort(int*a, int n, int &count_compare){
+void FlashSort(int*a, int n, long long & count_compare){
     int minVal = *min_element(a, a+n);
     int maxVal = *max_element(a, a+n);
     if (++count_compare && maxVal == minVal) return;
@@ -126,12 +126,12 @@ void generate_input_Order(int *a, int n, string input_Order){
     int mode = -1;
     if (input_Order == "-rand") mode = 0;
     if (input_Order == "-nsorted") mode = 1;
-    if (input_Order == "-sorted") mode = 2;
-    if (input_Order == "-rev") mode = 3;
+    if (input_Order == "-sorted") mode = 3;
+    if (input_Order == "-rev") mode = 2;
     if (mode != -1) GenerateData(a, n, mode);
 }
 
-void Output_res_algorithm(string para, double time, int comp) {
+void Output_res_algorithm(string para, double time, long long comp) {
     int mode = 0;
     if (para == "-time") mode = 1;
     if (para == "-comp") mode = 2;
@@ -152,7 +152,7 @@ void Output_res_algorithm(string para, double time, int comp) {
     }
 }
 
-void solveAlgoritm(string algo, int* a, int n, double& time, int& cc) {
+void solveAlgoritm(string algo, int* a, int n, double& time, long long &cc) {
     int mode = 0;
     if (algo == "selection-sort") mode = 1;
     if (algo == "insertion-sort") mode = 2;
@@ -261,31 +261,30 @@ void WriteFile(string file_name, int* a, int n){
 }
 
 int* ReadFile(string file_name, int &n){
-    ifstream f (file_name, ios::in);
-    if (f.fail()) cout << "Cannot open " << file_name << " file" << endl;
-    else{
-        f >> n;
-        int *a = new int[n];
-        for (int i = 0; i < n; i++) f >> a[i];
-        f.close();
-        return a;
-    }   
+    ifstream f(file_name, ios::in);
+    if (f.fail()) {
+        cout << "Cannot open " << file_name << " file" << endl;
+        return NULL;
+    }
+    f >> n;
+    int *a = new int[n];
+    for (int i = 0; i < n; i++) f >> a[i];
+    f.close();
+    return a;
+    
 }
 
 // Command line -------------------------------------------------------------------------------------------
-void _cmd_1(char* Algorithm, string given_Input, string Output_parameter)
-{
+void _cmd_1(char* Algorithm, string given_Input, string Output_parameter){
     int n;
     int *a = ReadFile(given_Input, n);
     string algo(Algorithm);
     double time = 0;
-    int count_compare = 0;
+    long long count_compare = 0;
     solveAlgoritm(algo, a, n, time, count_compare);
-
     cout << "Input file: " << given_Input << endl;
     cout << "Input size: " << n << endl;
     Output_res_algorithm(Output_parameter, time, count_compare);
-
     WriteFile("output.txt", a, n);
 }
 
@@ -293,7 +292,7 @@ void _cmd_2(char* Algorithm, int input_size, string input_order, string Output_p
 {
     string algo(Algorithm);
     double time = 0;
-    int count_compare = 0;
+    long long count_compare = 0;
     int n = input_size;
     int *a = new int[n];
     generate_input_Order(a, n, input_order);
