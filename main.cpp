@@ -5,8 +5,6 @@
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
-#include <cstdlib>
-#include <ctime>
 #include <vector>
 #include <algorithm>
 
@@ -51,7 +49,7 @@ void CountingSort(int *a, int n, int &count_compare){
         count[a[i] - min]++;
     }
     for (int i = 1; ++count_compare && i < count.size(); i++){
-        count[i] += count[i-1]; 
+        count[i] += count[i - 1]; 
     }
     for (int i = n - 1; ++count_compare && i >= 0; i--){
         res[count[a[i] - min] -1] = a[i];
@@ -63,7 +61,62 @@ void CountingSort(int *a, int n, int &count_compare){
 }
 
 void FlashSort(int*a, int n, int &count_compare){
+    int minVal = *min_element(a, a+n);
+    int maxVal = *max_element(a, a+n);
+    if (++count_compare && maxVal == minVal) return;
+    int maxIndex = 0;
+    int bucket = int(0.45*n);
 
+    vector <int> L(bucket);
+
+    for (int i = 0;++count_compare && i < n; i++){
+        if (++count_compare && a[i] == maxVal){
+            maxIndex = i;
+            break;
+        }
+    }
+
+    for (int i = 0; ++count_compare && i < n; i++){
+        int k = int((bucket - 1) * (a[i] - minVal) / (maxVal - minVal));
+        ++L[k];
+    }
+    // find the last element for each bucket
+    for (int i = 1; ++count_compare && i < bucket; i++ ){
+        L[i] += L[i - 1];
+    }
+
+    int hold = a[0];
+    int move = 0;
+    int flash = 0;
+    int k = 0;
+    int t = 0;
+    int j = 0;
+    while (++count_compare && move < n - 1){
+        while (++count_compare && j > L[k] -1){
+            j++;
+            k = int((bucket - 1) * (a[j] - minVal) / (maxVal - minVal));
+        }
+        flash = a[j];
+        if (++count_compare && k < 0) break;
+        while (++count_compare && j != L[k]){
+            k = int((bucket - 1) * (a[j] - minVal) / (maxVal - minVal));
+            hold = a[t = --L[k]];
+            a[t] = flash;
+            flash = hold;
+            move++;
+        }
+    }
+    // use Insertion Sort
+    int vt, x;
+	for (int i = 1; ++count_compare && i < n; i++) {
+		x = a[i];
+		vt = i;
+		while ((++count_compare && vt > 0) && (++count_compare && x < a[vt - 1])) {
+			a[vt] = a[vt - 1];
+			vt--;
+		}
+		a[vt] = x;
+	}
 }
 
 void Output_res_a(string para, double time, int comp) {
@@ -178,7 +231,7 @@ void solveAlgoritm(string algo, int* a, int n, double& time, int& cc) {
     case 11:
         cout << "Algorithm: Flash Sort" << endl;
         start = clock();
-        // ...
+        FlashSort(a, n, cc);
         end = clock();
         time = double(end - start) / CLOCKS_PER_SEC;
         break;
@@ -280,7 +333,6 @@ void _comparasion(char* algorithm1, char* algorithm2, char* s1, char* s2 = NULL)
 
 int main(int argc, char* argv[])
 {
-    srand(time(NULL));
     if (argc < 5)
         cout << "Invalid command - Too few arguments !" << endl;
     else
