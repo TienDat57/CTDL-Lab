@@ -3,7 +3,78 @@
 
 using namespace std;
 
-// Utility Functions --------------------------------------------------------------------------------------
+// Display Functions
+void show_Order(string input_order){
+    cout << "Input order: ";
+    if (input_order == "-rand") cout << "Randomized" << endl;
+    if (input_order == "-nsorted") cout << "Nearly sorted" << endl;
+    if (input_order == "-sorted") cout << "Sorted" << endl;
+    if (input_order == "-rev") cout << "Reversed" << endl;
+}
+
+void showAlgorithm(string algo) {
+    int mode = 0;
+    if (algo == "selection-sort") mode = 1;
+    if (algo == "insertion-sort") mode = 2;
+    if (algo == "bubble-sort") mode = 3;
+    if (algo == "shaker-sort") mode = 4;
+    if (algo == "shell-sort") mode = 5;
+    if (algo == "heap-sort") mode = 6;
+    if (algo == "merge-sort") mode = 7;
+    if (algo == "quick-sort") mode = 8;
+    if (algo == "counting-sort") mode = 9;
+    if (algo == "radix-sort") mode = 10;
+    if (algo == "flash-sort") mode = 11;
+
+    switch (mode)
+    {
+    case 1:
+        cout << "Algorithm: Selection Sort" << endl;
+        break;
+    case 2:
+        cout << "Algorithm: Insertion Sort" << endl;
+        break;
+    case 3:
+        cout << "Algorithm: Bubble Sort" << endl;
+        break;
+    case 4:
+        cout << "Algorithm: Shaker Sort" << endl;
+        break;
+    case 5:
+        cout << "Algorithm: Shell Sort" << endl;
+        break;
+    case 6:
+        cout << "Algorithm: Heap Sort" << endl;
+        break;
+    case 7:
+        cout << "Algorithm: Merge Sort" << endl;
+        break;
+    case 8:
+        cout << "Algorithm: Quick Sort" << endl;
+        break;
+    case 9:
+        cout << "Algorithm: Counting Sort" << endl;
+        break;
+    case 10:
+        cout << "Algorithm: Radix Sort" << endl;
+        break;
+    case 11:
+        cout << "Algorithm: Flash Sort" << endl;
+        break;
+    }
+}
+
+void WriteFile(string file_name, int* a, int n) {
+    ofstream f(file_name, ios::out);
+    if (f.fail()) cout << "Cannot open " << file_name << " file !" << endl;
+    else {
+        f << n << endl;
+        for (int i = 0; i < n; i++) f << a[i] << " ";
+        f.close();
+    }
+}
+
+// Calculating Functions --------------------------------------------------------------------------------------
 void generate_input_Order(int* a, int n, string input_Order) {
     int mode = -1;
     if (input_Order == "-rand") mode = 0;
@@ -53,92 +124,71 @@ void solveAlgoritm(string algo, int* a, int n, double& time, long long& cc) {
     switch (mode)
     {
     case 1:
-        cout << "Algorithm: Selection Sort" << endl;
         start = clock();
         // ...
         end = clock();
         time = double(end - start) / CLOCKS_PER_SEC;
         break;
     case 2:
-        cout << "Algorithm: Insertion Sort" << endl;
         start = clock();
         // ...
         end = clock();
         time = double(end - start) / CLOCKS_PER_SEC;
         break;
     case 3:
-        cout << "Algorithm: Bubble Sort" << endl;
         start = clock();
         // ...
         end = clock();
         time = double(end - start) / CLOCKS_PER_SEC;
         break;
     case 4:
-        cout << "Algorithm: Shaker Sort" << endl;
         start = clock();
         // ...
         end = clock();
         time = double(end - start) / CLOCKS_PER_SEC;
         break;
     case 5:
-        cout << "Algorithm: Shell Sort" << endl;
         start = clock();
         // ...
         end = clock();
         time = double(end - start) / CLOCKS_PER_SEC;
         break;
     case 6:
-        cout << "Algorithm: Heap Sort" << endl;
         start = clock();
         // ...
         end = clock();
         time = double(end - start) / CLOCKS_PER_SEC;
         break;
     case 7:
-        cout << "Algorithm: Merge Sort" << endl;
         start = clock();
         // ...
         end = clock();
         time = double(end - start) / CLOCKS_PER_SEC;
         break;
     case 8:
-        cout << "Algorithm: Quick Sort" << endl;
         start = clock();
         QuickSort(a, 0, n - 1, cc);
         end = clock();
         time = double(end - start) / CLOCKS_PER_SEC;
         break;
     case 9:
-        cout << "Algorithm: Counting Sort" << endl;
         start = clock();
         CountingSort(a, n, cc);
         end = clock();
         time = double(end - start) / CLOCKS_PER_SEC;
         break;
     case 10:
-        cout << "Algorithm: Radix Sort" << endl;
         start = clock();
         // ...
         end = clock();
         time = double(end - start) / CLOCKS_PER_SEC;
         break;
     case 11:
-        cout << "Algorithm: Flash Sort" << endl;
         start = clock();
         FlashSort(a, n, cc);
         end = clock();
         time = double(end - start) / CLOCKS_PER_SEC;
         break;
-    }
-}
-
-void WriteFile(string file_name, int* a, int n) {
-    ofstream f(file_name, ios::out);
-    if (f.fail()) cout << "Cannot open " << file_name << " file !" << endl;
-    else {
-        f << n << endl;
-        for (int i = 0; i < n; i++) f << a[i] << " ";
-        f.close();
     }
 }
 
@@ -163,6 +213,7 @@ void _cmd_1(char* Algorithm, string given_Input, string Output_parameter) {
     string algo(Algorithm);
     double time = 0;
     long long count_compare = 0;
+    showAlgorithm(algo);
     solveAlgoritm(algo, a, n, time, count_compare);
     cout << "Input file: " << given_Input << endl;
     cout << "Input size: " << n << endl;
@@ -173,27 +224,75 @@ void _cmd_1(char* Algorithm, string given_Input, string Output_parameter) {
 void _cmd_2(char* Algorithm, int input_size, string input_order, string Output_parameter)
 {
     string algo(Algorithm);
-    double time = 0;
-    long long count_compare = 0;
+    showAlgorithm(algo);
+    cout << "Input size: " << input_size << endl;
     int n = input_size;
     int* a = new int[n];
+    double time = 0;
+    long long count_compare = 0;
+    show_Order(input_order);
+
     generate_input_Order(a, n, input_order);
     WriteFile("input.txt", a, n);
     solveAlgoritm(algo, a, n, time, count_compare);
     WriteFile("output.txt", a, n);
-    cout << "Input size: " << input_size << endl;
-    cout << "Input order: ";
-    if (input_order == "-rand") cout << "randomized data" << endl;
-    if (input_order == "-nsorted") cout << "nearly sorted data" << endl;
-    if (input_order == "-sorted") cout << "sorted data" << endl;
-    if (input_order == "-rev") cout << "reverse sorted data" << endl;
     Output_res_algorithm(Output_parameter, time, count_compare);
     delete[] a;
 }
 
-void _cmd_3(char* Algorithm, int input_size, string Ouput_parameter)
+void _cmd_3(char* Algorithm, int input_size, string Output_parameter)
 {
-    cout << "loading command line 3..." << endl;
+    string algo(Algorithm);
+    showAlgorithm(algo);
+    cout << "Input size: " << input_size << endl << endl;
+    int n = input_size;
+    int* a = new int[n];
+    double time;
+    long long count_compare;
+
+    // -rand
+    string input_order = "-rand";
+    show_Order(input_order);
+    time = 0;
+    count_compare = 0;
+    generate_input_Order(a, n, input_order);
+    WriteFile("input_1.txt", a, n);
+    solveAlgoritm(algo, a, n, time, count_compare);
+    Output_res_algorithm(Output_parameter, time, count_compare);
+    cout << endl;
+
+    // -nsorted
+    input_order = "-nsorted";
+    show_Order(input_order);
+    time = 0;
+    count_compare = 0;
+    generate_input_Order(a, n, input_order);
+    WriteFile("input_2.txt", a, n);
+    solveAlgoritm(algo, a, n, time, count_compare);
+    Output_res_algorithm(Output_parameter, time, count_compare);
+    cout << endl;
+
+    // -sorted
+    input_order = "-sorted";
+    show_Order(input_order);
+    time = 0;
+    count_compare = 0;
+    generate_input_Order(a, n, input_order);
+    WriteFile("input_3.txt", a, n);
+    solveAlgoritm(algo, a, n, time, count_compare);
+    Output_res_algorithm(Output_parameter, time, count_compare);
+    cout << endl;
+
+    // -rev
+    input_order = "-rev";
+    show_Order(input_order);
+    time = 0;
+    count_compare = 0;
+    generate_input_Order(a, n, input_order);
+    WriteFile("input_4.txt", a, n);
+    solveAlgoritm(algo, a, n, time, count_compare);
+    Output_res_algorithm(Output_parameter, time, count_compare);
+    cout << endl;
 }
 
 void _cmd_4(char* Algorithm1, char* Algorithm2, string givenInput) {
