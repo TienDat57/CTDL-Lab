@@ -13,17 +13,17 @@ void show_Order(string input_order){
 }
 
 void showAlgorithm(string algo) {
-    if (algo == "selection-sort") cout << "Algorithm: Selection Sort" << endl;
-    if (algo == "insertion-sort") cout << "Algorithm: Insertion Sort" << endl;
-    if (algo == "bubble-sort") cout << "Algorithm: Bubble Sort" << endl;
-    if (algo == "shaker-sort") cout << "Algorithm: Shaker Sort" << endl;
-    if (algo == "shell-sort") cout << "Algorithm: Shell Sort" << endl;
-    if (algo == "heap-sort") cout << "Algorithm: Heap Sort" << endl;
-    if (algo == "merge-sort") cout << "Algorithm: Merge Sort" << endl;
-    if (algo == "quick-sort") cout << "Algorithm: Quick Sort" << endl;
-    if (algo == "counting-sort") cout << "Algorithm: Counting Sort" << endl;
-    if (algo == "radix-sort") cout << "Algorithm: Radix Sort" << endl;
-    if (algo == "flash-sort") cout << "Algorithm: Flash Sort" << endl;
+    if (algo == "selection-sort") cout << "Selection Sort";
+    if (algo == "insertion-sort") cout << "Insertion Sort" ;
+    if (algo == "bubble-sort") cout << "Bubble Sort" ;
+    if (algo == "shaker-sort") cout << "Shaker Sort" ;
+    if (algo == "shell-sort") cout << "Shell Sort" ;
+    if (algo == "heap-sort") cout << "Heap Sort" ;
+    if (algo == "merge-sort") cout << "Merge Sort" ;
+    if (algo == "quick-sort") cout << "Quick Sort" ;
+    if (algo == "counting-sort") cout << "Counting Sort" ;
+    if (algo == "radix-sort") cout << "Radix Sort" ;
+    if (algo == "flash-sort") cout << "Flash Sort" ;
 }
 
 void WriteFile(string file_name, int* a, int n) {
@@ -63,6 +63,27 @@ void Output_res_algorithm(string para, double time, long long comp) {
     case 3:
         cout << "Running time: " << time << 's' << endl;
         cout << "Comparisions: " << comp << endl;
+        break;
+    }
+}
+
+void Output_res_compare(string para, double time1, long long comp1, double time2, long long comp2) {
+    int mode = 0;
+    if (para == "-time") mode = 1;
+    if (para == "-comp") mode = 2;
+    if (para == "-both") mode = 3;
+    cout << "--------------------------" << endl;
+    switch (mode)
+    {
+    case 1:
+        cout << "Running time: " << time1 << 's' << " | " << time2 << 's' << endl;
+        break;
+    case 2:
+        cout << "Comparisions: " << comp1 << " | " << comp2 << endl;
+        break;
+    case 3:
+        cout << "Running time: " << time1 << 's' << " | " << time2 << 's' << endl;
+         cout << "Comparisions: " << comp1 << " | " << comp2 << endl;
         break;
     }
 }
@@ -170,12 +191,14 @@ int* ReadFile(string file_name, int& n) {
 
 // Command line -------------------------------------------------------------------------------------------
 void _cmd_1(char* Algorithm, string given_Input, string Output_parameter) {
+    cout << "Algorithm: " ;
+    string algo(Algorithm);
+    showAlgorithm(algo);
+    cout << endl;
     int n;
     int* a = ReadFile(given_Input, n);
-    string algo(Algorithm);
     double time = 0;
     long long count_compare = 0;
-    showAlgorithm(algo);
     solveAlgoritm(algo, a, n, time, count_compare);
     cout << "Input file: " << given_Input << endl;
     cout << "Input size: " << n << endl;
@@ -185,15 +208,16 @@ void _cmd_1(char* Algorithm, string given_Input, string Output_parameter) {
 
 void _cmd_2(char* Algorithm, int input_size, string input_order, string Output_parameter)
 {
+    cout << "Algorithm: " ;
     string algo(Algorithm);
     showAlgorithm(algo);
+    cout << endl;
     cout << "Input size: " << input_size << endl;
     int n = input_size;
     int* a = new int[n];
     double time = 0;
     long long count_compare = 0;
     show_Order(input_order);
-
     generate_input_Order(a, n, input_order);
     WriteFile("input.txt", a, n);
     solveAlgoritm(algo, a, n, time, count_compare);
@@ -204,8 +228,10 @@ void _cmd_2(char* Algorithm, int input_size, string input_order, string Output_p
 
 void _cmd_3(char* Algorithm, int input_size, string Output_parameter)
 {
+    cout << "Algorithm: " ;
     string algo(Algorithm);
     showAlgorithm(algo);
+    cout << endl;
     cout << "Input size: " << input_size << endl << endl;
     int n = input_size;
     int* a = new int[n];
@@ -261,8 +287,28 @@ void _cmd_4(char* Algorithm1, char* Algorithm2, string givenInput) {
     cout << "loading command line 4..." << endl;
 }
 
-void _cmd_5(char* Algorithm1, char* Algorithm2, int intput_size, string input_order) {
-    cout << "loading command line 5..." << endl;
+void _cmd_5(char *Algorithm1, char *Algorithm2, int input_size, string input_order)
+{
+	cout << "Algorithm: ";
+    string algo1(Algorithm1), algo2(Algorithm2);
+    showAlgorithm(algo1);
+    cout << " | ";
+    showAlgorithm(algo2);
+    cout << endl;
+	show_Order(input_order);
+	int n = input_size;
+    int *a1 = new int[n];
+	long long compare1 = 0, compare2 = 0;
+	double time1 = 0, time2 = 0;
+	generate_input_Order(a1, n, input_order);
+    WriteFile("input.txt", a1, n);
+    int *a2 = ReadFile("input.txt", n);
+	solveAlgoritm(algo1, a1, n, time1, compare1);
+	solveAlgoritm(algo2, a2, n, time2, compare2);
+    Output_res_compare("-both", time1, compare1, time2, compare2);
+	delete[] a1;
+	delete[] a2;
+
 }
 
 void _algorithm(char* algorithm, char* s1, char* s2, char* s3 = NULL)
