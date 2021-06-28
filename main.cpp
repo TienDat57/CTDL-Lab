@@ -338,8 +338,29 @@ void _cmd_3(char* Algorithm, int input_size, string Output_parameter)
     cout << endl;
 }
 
-void _cmd_4(char* Algorithm1, char* Algorithm2, string givenInput) {
-    cout << "loading command line 4..." << endl;
+void _cmd_4(char *Algorithm1, char *Algorithm2, string givenInput)
+{
+	cout << "Algorithm: ";
+	string algo1(Algorithm1), algo2(Algorithm2);
+	showAlgorithm(algo1);
+	cout << " | ";
+	showAlgorithm(algo2);
+	cout << endl;
+	cout << "Input file : " << givenInput << endl;
+
+	int n = 0;
+	int *a1 = ReadFile(givenInput, n);
+	int *a2 = ReadFile(givenInput, n);
+	long long compare1 = 0, compare2 = 0;
+	double time1 = 0, time2 = 0;
+	cout << "Input size : " << n << endl;
+
+	solveAlgoritm(algo1, a1, n, time1, compare1);
+	solveAlgoritm(algo2, a2, n, time2, compare2);
+	Output_res_compare("-both", time1, compare1, time2, compare2);
+
+	delete[] a1;
+	delete[] a2;
 }
 
 void _cmd_5(char *Algorithm1, char *Algorithm2, int input_size, string input_order)
