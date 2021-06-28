@@ -18,7 +18,8 @@ void swap(int &a, int &b){
     b = c;
 }
 
-int index(int *a, int low, int high, long long & count_compare){
+// Quick sort
+int index_compare(int *a, int low, int high, long long & count_compare){
 	int pi = a[(high + low) / 2];
 	int l = low;
 	int r = high;
@@ -33,13 +34,35 @@ int index(int *a, int low, int high, long long & count_compare){
 	return l;
 }
 
-void QuickSort(int* a, int low, int high, long long & count_compare){
-	int pi = index(a, low, high, count_compare);
-	if (++count_compare && low < pi - 1) QuickSort(a, low, pi - 1, count_compare);
-	if (++count_compare && pi < high) QuickSort(a, pi, high, count_compare);
+void QuickSort_compare(int* a, int low, int high, long long & count_compare){
+	int pi = index_compare(a, low, high, count_compare);
+	if (++count_compare && low < pi - 1) QuickSort_compare(a, low, pi - 1, count_compare);
+	if (++count_compare && pi < high) QuickSort_compare(a, pi, high, count_compare);
 }
 
-void CountingSort(int* a, int n, long long& count_compare) {
+int index_time(int *a, int low, int high){
+	int pi = a[(high + low) / 2];
+	int l = low;
+	int r = high;
+	while (l <= r){
+		while (l <= r && a[l] < pi) l++;
+		while (l <= r && a[r] > pi) r--;
+		if (l <= r) {
+			swap(a[l],a[r]);
+			l++; r--;
+		}
+	}
+	return l;
+}
+
+void QuickSort_time(int* a, int low, int high){
+	int pi = index_time(a, low, high);
+	if (low < pi - 1) QuickSort_time(a, low, pi - 1);
+	if (pi < high) QuickSort_time(a, pi, high);
+}
+
+// Counting sort
+void CountingSort_compare(int* a, int n, long long& count_compare) {
     int max = *max_element(a, a + n);
     int min = *min_element(a, a + n);
     vector <int> count(max - min + 1);
@@ -59,7 +82,29 @@ void CountingSort(int* a, int n, long long& count_compare) {
     }
 }
 
-void FlashSort(int* a, int n, long long& count_compare) {int minVal = *min_element(a, a + n);
+void CountingSort_time(int* a, int n) {
+    int max = *max_element(a, a + n);
+    int min = *min_element(a, a + n);
+    vector <int> count(max - min + 1);
+    vector <int> res(n);
+    for (int i = 0; i < n; i++) {
+        count[a[i] - min]++;
+    }
+    for (int i = 1; i < count.size(); i++) {
+        count[i] += count[i - 1];
+    }
+    for (int i = n - 1; i >= 0; i--) {
+        res[count[a[i] - min] - 1] = a[i];
+        count[a[i] - min]--;
+    }
+    for (int i = 0; i < n; i++) {
+        a[i] = res[i];
+    }
+}
+
+// Flash sort
+void FlashSort_compare(int* a, int n, long long& count_compare) {
+    int minVal = *min_element(a, a + n);
     int maxVal = *max_element(a, a + n);
     if (++count_compare && maxVal == minVal) return;
     int maxIndex = 0;
@@ -75,6 +120,7 @@ void FlashSort(int* a, int n, long long& count_compare) {int minVal = *min_eleme
     }
 
     double x = double((bucket - 1) / (a[maxIndex] - minVal));
+
     for (int i = 0; ++count_compare && i < n; i++) {
         int k = int(x * (a[i] - minVal));
         ++L[k];
@@ -84,25 +130,25 @@ void FlashSort(int* a, int n, long long& count_compare) {int minVal = *min_eleme
         L[i] += L[i - 1];
     }
 
-    int hold = a[0];
+    int hold = a[maxIndex];
     int move = 0;
     int flash = 0;
-    int k = 0;
+    int k = bucket - 1;
     int t = 0;
     int j = 0;
     while (++count_compare && move < n - 1) {
         while (++count_compare && j > L[k] - 1) {
-            j++;
+            ++j;
             k = int(x * (a[j] - minVal));
         }
         flash = a[j];
         if (++count_compare && k < 0) break;
         while (++count_compare && j != L[k]) {
-            k = int(x * (a[j] - minVal));
+            k = int(x * (flash - minVal));
             hold = a[t = --L[k]];
             a[t] = flash;
             flash = hold;
-            move++;
+            ++move;
         }
     }
     // use Insertion Sort
@@ -117,6 +163,67 @@ void FlashSort(int* a, int n, long long& count_compare) {int minVal = *min_eleme
         a[vt] = nam;
     }
 }
+
+void FlashSort_time(int* a, int n) {
+    int minVal = *min_element(a, a + n);
+    int maxVal = *max_element(a, a + n);
+    if (maxVal == minVal) return;
+    int maxIndex = 0;
+    int bucket = int(0.45 * n);
+
+    vector <int> L(bucket);
+
+    for (int i = 0; i < n; i++) {
+        if ( a[i] == maxVal) {
+            maxIndex = i;
+            break;
+        }
+    }
+
+    double x = double((bucket - 1) / (a[maxIndex] - minVal));
+    for (int i = 0; i < n; i++) {
+        int k = int(x * (a[i] - minVal));
+        ++L[k];
+    }
+    // find the last element for each bucket
+    for (int i = 1; i < bucket; i++) {
+        L[i] += L[i - 1];
+    }
+
+    int hold = a[maxIndex];
+    int move = 0;
+    int flash = 0;
+    int k = bucket - 1;
+    int t = 0;
+    int j = 0;
+    while (move < n - 1) {
+        while (j > L[k] - 1) {
+            ++j;
+            k = int(x * (a[j] - minVal));
+        }
+        flash = a[j];
+        if (k < 0) break;
+        while (j != L[k]) {
+            k = int(x * (flash - minVal));
+            hold = a[t = --L[k]];
+            a[t] = flash;
+            flash = hold;
+            ++move;
+        }
+    }
+    // use Insertion Sort
+    int vt, nam;
+    for (int i = 1;i < n; i++) {
+        nam = a[i];
+        vt = i;
+        while (vt > 0 && nam < a[vt - 1]) {
+            a[vt] = a[vt - 1];
+            vt--;
+        }
+        a[vt] = nam;
+    }
+}
+
 
 
 #endif
