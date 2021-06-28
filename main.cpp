@@ -6,24 +6,73 @@ using namespace std;
 // Display Functions
 void show_Order(string input_order){
     cout << "Input order: ";
-    if (input_order == "-rand") cout << "Randomized" << endl;
-    if (input_order == "-nsorted") cout << "Nearly sorted" << endl;
-    if (input_order == "-sorted") cout << "Sorted" << endl;
-    if (input_order == "-rev") cout << "Reversed" << endl;
+    bool check = 0;
+    if (input_order == "-rand") {
+        cout << "Randomized" << endl;
+        check = 1;
+    }
+    if (input_order == "-nsorted"){
+        cout << "Nearly sorted" << endl;
+        check = 1;
+    }
+    if (input_order == "-sorted"){ 
+        cout << "Sorted" << endl;
+        check = 1;
+    }
+    if (input_order == "-rev"){ 
+        cout << "Reversed" << endl;
+        check = 1;
+    }
+    // if (check == 0) cout << "Can't operate " << input_order << endl;
 }
 
 void showAlgorithm(string algo) {
-    if (algo == "selection-sort") cout << "Selection Sort";
-    if (algo == "insertion-sort") cout << "Insertion Sort" ;
-    if (algo == "bubble-sort") cout << "Bubble Sort" ;
-    if (algo == "shaker-sort") cout << "Shaker Sort" ;
-    if (algo == "shell-sort") cout << "Shell Sort" ;
-    if (algo == "heap-sort") cout << "Heap Sort" ;
-    if (algo == "merge-sort") cout << "Merge Sort" ;
-    if (algo == "quick-sort") cout << "Quick Sort" ;
-    if (algo == "counting-sort") cout << "Counting Sort" ;
-    if (algo == "radix-sort") cout << "Radix Sort" ;
-    if (algo == "flash-sort") cout << "Flash Sort" ;
+    bool check = 0;
+    if (algo == "selection-sort") {
+        cout << "Selection Sort";
+        check = 1;
+    }
+    if (algo == "insertion-sort") {
+        cout << "Insertion Sort" ;
+        check = 1;
+    }
+    if (algo == "bubble-sort") {
+        cout << "Bubble Sort" ;
+        check = 1;
+    }
+    if (algo == "shaker-sort") {
+        cout << "Shaker Sort" ;
+        check = 1;
+    }
+    if (algo == "shell-sort") {
+        cout << "Shell Sort" ;
+        check = 1;
+    }
+    if (algo == "heap-sort") {
+        cout << "Heap Sort" ;
+        check = 1;
+    }
+    if (algo == "merge-sort"){
+        cout << "Merge Sort" ;
+        check = 1;
+    } 
+    if (algo == "quick-sort") {
+        cout << "Quick Sort" ;
+        check = 1;
+    }
+    if (algo == "counting-sort"){
+        cout << "Counting Sort" ;
+        check = 1;
+    } 
+    if (algo == "radix-sort"){
+        cout << "Radix Sort" ;
+        check = 1;
+    } 
+    if (algo == "flash-sort") {
+        cout << "Flash Sort" ;
+        check = 1;
+    }
+    if (check == 0) cout << "Error: unknown sorting algorithm!";
 }
 
 void WriteFile(string file_name, int* a, int n) {
@@ -34,16 +83,6 @@ void WriteFile(string file_name, int* a, int n) {
         for (int i = 0; i < n; i++) f << a[i] << " ";
         f.close();
     }
-}
-
-// Calculating Functions --------------------------------------------------------------------------------------
-void generate_input_Order(int* a, int n, string input_Order) {
-    int mode = -1;
-    if (input_Order == "-rand") mode = 0;
-    if (input_Order == "-nsorted") mode = 1;
-    if (input_Order == "-sorted") mode = 3;
-    if (input_Order == "-rev") mode = 2;
-    if (mode != -1) GenerateData(a, n, mode);
 }
 
 void Output_res_algorithm(string para, double time, long long comp) {
@@ -64,6 +103,9 @@ void Output_res_algorithm(string para, double time, long long comp) {
         cout << "Running time: " << time << 's' << endl;
         cout << "Comparisions: " << comp << endl;
         break;
+    default:
+        cout << "Error: unknown output parameter!" << endl;
+        break;
     }
 }
 
@@ -83,9 +125,23 @@ void Output_res_compare(string para, double time1, long long comp1, double time2
         break;
     case 3:
         cout << "Running time: " << time1 << 's' << " | " << time2 << 's' << endl;
-         cout << "Comparisions: " << comp1 << " | " << comp2 << endl;
+        cout << "Comparisions: " << comp1 << " | " << comp2 << endl;
+        break;
+    default:
+        cout << "Error: unknown output parameter!" << para << endl;
         break;
     }
+}
+
+// Calculating Functions --------------------------------------------------------------------------------------
+void generate_input_Order(int* a, int n, string input_Order) {
+    int mode = -1;
+    if (input_Order == "-rand") mode = 0;
+    if (input_Order == "-nsorted") mode = 1;
+    if (input_Order == "-sorted") mode = 3;
+    if (input_Order == "-rev") mode = 2;
+    GenerateData(a, n, mode);
+    if (mode == -1) a = NULL;
 }
 
 void solveAlgoritm(string algo, int* a, int n, double& time, long long& cc) {
@@ -206,8 +262,7 @@ void _cmd_1(char* Algorithm, string given_Input, string Output_parameter) {
     WriteFile("output.txt", a, n);
 }
 
-void _cmd_2(char* Algorithm, int input_size, string input_order, string Output_parameter)
-{
+void _cmd_2(char* Algorithm, int input_size, string input_order, string Output_parameter){
     cout << "Algorithm: " ;
     string algo(Algorithm);
     showAlgorithm(algo);
@@ -308,7 +363,6 @@ void _cmd_5(char *Algorithm1, char *Algorithm2, int input_size, string input_ord
     Output_res_compare("-both", time1, compare1, time2, compare2);
 	delete[] a1;
 	delete[] a2;
-
 }
 
 void _algorithm(char* algorithm, char* s1, char* s2, char* s3 = NULL)
