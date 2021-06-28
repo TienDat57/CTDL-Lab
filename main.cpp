@@ -13,55 +13,17 @@ void show_Order(string input_order){
 }
 
 void showAlgorithm(string algo) {
-    int mode = 0;
-    if (algo == "selection-sort") mode = 1;
-    if (algo == "insertion-sort") mode = 2;
-    if (algo == "bubble-sort") mode = 3;
-    if (algo == "shaker-sort") mode = 4;
-    if (algo == "shell-sort") mode = 5;
-    if (algo == "heap-sort") mode = 6;
-    if (algo == "merge-sort") mode = 7;
-    if (algo == "quick-sort") mode = 8;
-    if (algo == "counting-sort") mode = 9;
-    if (algo == "radix-sort") mode = 10;
-    if (algo == "flash-sort") mode = 11;
-
-    switch (mode)
-    {
-    case 1:
-        cout << "Algorithm: Selection Sort" << endl;
-        break;
-    case 2:
-        cout << "Algorithm: Insertion Sort" << endl;
-        break;
-    case 3:
-        cout << "Algorithm: Bubble Sort" << endl;
-        break;
-    case 4:
-        cout << "Algorithm: Shaker Sort" << endl;
-        break;
-    case 5:
-        cout << "Algorithm: Shell Sort" << endl;
-        break;
-    case 6:
-        cout << "Algorithm: Heap Sort" << endl;
-        break;
-    case 7:
-        cout << "Algorithm: Merge Sort" << endl;
-        break;
-    case 8:
-        cout << "Algorithm: Quick Sort" << endl;
-        break;
-    case 9:
-        cout << "Algorithm: Counting Sort" << endl;
-        break;
-    case 10:
-        cout << "Algorithm: Radix Sort" << endl;
-        break;
-    case 11:
-        cout << "Algorithm: Flash Sort" << endl;
-        break;
-    }
+    if (algo == "selection-sort") cout << "Algorithm: Selection Sort" << endl;
+    if (algo == "insertion-sort") cout << "Algorithm: Insertion Sort" << endl;
+    if (algo == "bubble-sort") cout << "Algorithm: Bubble Sort" << endl;
+    if (algo == "shaker-sort") cout << "Algorithm: Shaker Sort" << endl;
+    if (algo == "shell-sort") cout << "Algorithm: Shell Sort" << endl;
+    if (algo == "heap-sort") cout << "Algorithm: Heap Sort" << endl;
+    if (algo == "merge-sort") cout << "Algorithm: Merge Sort" << endl;
+    if (algo == "quick-sort") cout << "Algorithm: Quick Sort" << endl;
+    if (algo == "counting-sort") cout << "Algorithm: Counting Sort" << endl;
+    if (algo == "radix-sort") cout << "Algorithm: Radix Sort" << endl;
+    if (algo == "flash-sort") cout << "Algorithm: Flash Sort" << endl;
 }
 
 void WriteFile(string file_name, int* a, int n) {
@@ -345,7 +307,7 @@ void _comparasion(char* algorithm1, char* algorithm2, char* s1, char* s2 = NULL)
     }
 }
 
-// Main ---------------------------------------------------------------------------------------------------
+// main ---------------------------------------------------------------------------------------------------
 int main(int argc, char* argv[])
 {
     if (argc < 5)
