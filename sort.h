@@ -430,7 +430,7 @@ void SelectionSort_compare(int* a, int n, int& count_compare)
     }
 }
 
-void SelectionSort_time(int* a, int n);
+void SelectionSort_time(int* a, int n)
 {
     for (int i = 0; i < n; i++)
     {
