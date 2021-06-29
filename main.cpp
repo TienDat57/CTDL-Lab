@@ -227,23 +227,23 @@ void solveAlgoritm(string algo, int *a, int n, double &time, long long &cc, stri
         if (mode_para == 3 || mode_para == 1)
         {
             start = clock();
-            // sort - time
+            SelectionSort_time(a, n);
             end = clock();
             time = double(end - start) / CLOCKS_PER_SEC;
             mode_para--;
         }
-        if (mode_para == 2) // sort - compare
+        if (mode_para == 2) SelectionSort_compare(temp, n, cc);
             break;
     case 2:
         if (mode_para == 3 || mode_para == 1)
         {
             start = clock();
-            // sort - time
+            InsertionSort_time(a, n);
             end = clock();
             time = double(end - start) / CLOCKS_PER_SEC;
             mode_para--;
         }
-        if (mode_para == 2) // sort - compare
+        if (mode_para == 2) InsertionSort_compare(temp, n, cc);
             break;
     case 3:
         if (mode_para == 3 || mode_para == 1)

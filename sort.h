@@ -624,4 +624,65 @@ void BubbleSort_compare(int a[], int n,long long& count_compare)
 	}
 }
 
+//SelectionSort
+void SelectionSort_compare(int* a, int n, long long& count_compare)
+{
+    for (int i = 0; ++count_compare && i < n; i++)
+    {
+        int m = a[i];
+        int mIndex = i;
+        for (int j = i; ++count_compare && j < n; j++)
+            if (++count_compare && a[j] < a[i])
+            {
+                m = a[j];
+                mIndex = j;
+            }
+        swap(a[i], a[mIndex]);
+    }
+}
+void SelectionSort_time(int* a, int n)
+{
+    for (int i = 0; i < n; i++)
+    {
+        int m = a[i];
+        int mIndex = i;
+        for (int j = i; j < n; j++)
+            if (a[j] < a[i])
+            {
+                m = a[j];
+                mIndex = j;
+            }
+        swap(a[i], a[mIndex]);
+    }
+}
+
+//InsertionSort
+void InsertionSort_compare(int* a, int n, long long& count_compare)
+{
+    for (int i = 1; ++count_compare && i < n; i++)
+    {
+        int k = i - 1;
+        int key = a[i];
+        while (++count_compare && a[k] > key && ++count_compare && k >= 0)
+        {
+            a[k + 1] = a[k];
+            k--;
+        }
+        a[k + 1] = key;
+    }
+}
+void InsertionSort_time(int* a, int n)
+{
+    for (int i = 1; i < n; i++)
+    {
+        int k = i - 1;
+        int key = a[i];
+        while (a[k] > key && k >= 0)
+        {
+            a[k + 1] = a[k];
+            k--;
+        }
+        a[k + 1] = key;
+    }
+}
 #endif

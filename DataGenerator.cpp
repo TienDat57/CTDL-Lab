@@ -8,7 +8,6 @@ template <class T>
 void HoanVi(T &a, T &b)
 {
 	T x = a;
-	T x = a; 
 	a = b;
 	b = x;
 }
