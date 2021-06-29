@@ -144,71 +144,118 @@ void ShakerSort_compare(int a[], int n,long long& count_compare)
 	}
 }
 // MergeSort
-void Merge_time(int a[], int first, int mid, int last)
+void Merge_time(int arr[], int left, int mid, int right)
 {
-	int n1 = mid - first + 1;
-	int n2 = last - mid;
-	int *L = new int[n1];
-	int *R = new int[n2];
-	for (int i = 0; i < n1; ++i)
-		L[i] = a[first + i];
-	for (int j = 0; j < n2; ++j)
-		R[j] = a[mid + j + 1];
-	int i = 0;
-	int j = 0;
-	int k = first;
-	while (i < n1 && j < n2)
-		a[++k] = (L[i] < R[j]) ? L[++i] : R[++j];
-
-	while (j < n2)
-		a[++k] = R[++j];
-	while (i < n1)
-		a[++k] = L[++i];
-	delete[] L;
-	delete[] R;
+    int n1 = mid - left + 1;
+    int n2 =  right - mid;
+ 
+    int* L = new int[n1];
+    int* R = new int [n2];
+ 
+    for (int ii = 0; ii < n1; ++ii)
+        L[ii] = arr[left + ii];
+    for (int jj = 0; jj < n2; ++jj)
+        R[jj] = arr[mid + 1+ jj];
+ 
+    int i = 0;
+    int j = 0;
+    int k = left;
+    while (i < n1 && j < n2)
+    {
+        if (L[i] <= R[j])
+        {
+            arr[k] = L[i];
+            ++i;
+        }
+        else
+        {
+            arr[k] = R[j];
+            ++j;
+        }
+        ++k;
+    }
+ 
+    while (i < n1)
+    {
+        arr[k] = L[i];
+        ++i;
+        ++k;
+    }
+ 
+    while (j < n2)
+    {
+        arr[k] = R[j];
+        ++j;
+        ++k;
+    }
 }
-void MergeSort_time(int a[], int first, int last)
+ 
+void MergeSort_time(int arr[], int left, int right)
 {
-	if (first < last)
-	{
-		int mid = first + (last - first) / 2;
-		MergeSort_time(a, first, mid);
-		MergeSort_time(a, mid + 1, last);
-		Merge_time(a, first, mid, last);
-	}
+    if (left < right)
+    {
+        int mid = left +(right -left)/2;
+        MergeSort_time(arr, left, mid);
+        MergeSort_time(arr, ++mid , right);
+        Merge_time(arr, left, mid, right);
+    }
 }
-void Merge_compare(int a[], int first, int mid, int last,long long& count_compare)
+void Merge_compare(int arr[], int left, int mid, int right,long long& count_compare)
 {
-	int n1 = mid - first + 1;
-	int n2 = last - mid;
-	int *L = new int[n1];
-	int *R = new int[n2];
-	for (int i = 0;++count_compare && i < n1; ++i)
-		L[i] = a[first + i];
-	for (int j = 0;++count_compare && j < n2; ++j)
-		R[j] = a[mid + j + 1];
-	int i = 0;
-	int j = 0;
-	int k = first;
-	while (++count_compare && i < n1 && j < n2)
-		a[++k] = (L[i] < R[j]) ? L[++i] : R[++j];
-
-	while (++count_compare && j < n2)
-		a[++k] = R[++j];
-	while (++count_compare && i < n1)
-		a[++k] = L[++i];
-	delete[] L;
-	delete[] R;
+    int n1 = mid - left + 1;
+    int n2 =  right - mid;
+ 
+    int* L = new int[n1];
+    int* R = new int [n2];
+ 
+    for (int ii = 0; ++count_compare && ii < n1; ++ii)
+        L[ii] = arr[left + ii];
+    for (int jj = 0; ++count_compare && jj < n2; ++jj)
+        R[jj] = arr[mid + 1+ jj];
+ 
+    int i = 0;
+    int j = 0;
+    int k = left;
+    while (++count_compare && i < n1 && j < n2)
+    {
+        ++count_compare ;
+        if (++count_compare && L[i] <= R[j])
+        {
+            arr[k] = L[i];
+            ++i;
+        }
+        else
+        {
+            arr[k] = R[j];
+            ++j;
+        }
+        ++k;
+    }
+ 
+    while (++count_compare && i < n1)
+    {
+        arr[k] = L[i];
+        ++i;
+        ++k;
+    }
+ 
+    while (++count_compare && j < n2)
+    {
+        arr[k] = R[j];
+        ++j;
+        ++k;
+    }
 }
-void MergeSort_compare(int a[], int first, int last,long long& count_compare)
+ 
+void MergeSort_compare(int arr[], int left, int right,long long& count_compare)
 {
-	if (++count_compare && first < last)
-	{
-		int mid = first + (last - first) / 2;
-		MergeSort_compare(a, first, mid,count_compare);
-		MergeSort_compare(a, mid + 1, last,count_compare);
-		Merge_compare(a, first, mid, last,count_compare);
-	}
+    if (left < right)
+    {
+        int mid = left +(right -left)/2;
+        MergeSort_time(arr, left, mid);
+        MergeSort_time(arr, ++mid , right);
+        Merge_time(arr, left, mid, right);
+    }
 }
 
 // BubbleSort
@@ -263,7 +310,6 @@ void show_Order(string input_order){
         cout << "Reversed" << endl;
         check = 1;
     }
-    // if (check == 0) cout << "Can't operate " << input_order << endl;
 }
 
 void showAlgorithm(string algo) {
