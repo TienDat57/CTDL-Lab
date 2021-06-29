@@ -8,6 +8,7 @@ template <class T>
 void HoanVi(T &a, T &b)
 {
 	T x = a;
+	T x = a; 
 	a = b;
 	b = x;
 }
@@ -50,29 +51,29 @@ void GenerateNearlySortedData(int a[], int n)
 	{
 		a[i] = i;
 	}
-	srand((unsigned int) time(NULL));
-	for (int i = 0; i < 10; i ++)
+	srand((unsigned int)time(NULL));
+	for (int i = 0; i < 10; i++)
 	{
-		int r1 = rand()%n;
-		int r2 = rand()%n;
+		int r1 = rand() % n;
+		int r2 = rand() % n;
 		HoanVi(a[r1], a[r2]);
 	}
 }
 
-void GenerateData(int a[], int n, int dataType)
+void GenerateData(int *a, int n, int dataType)
 {
 	switch (dataType)
 	{
-	case 0:	// ngẫu nhiên
+	case 0: // ngẫu nhiên
 		GenerateRandomData(a, n);
 		break;
-	case 1:	// có thứ tự
+	case 1: // có thứ tự
 		GenerateSortedData(a, n);
 		break;
-	case 2:	// có thứ tự ngược
+	case 2: // có thứ tự ngược
 		GenerateReverseData(a, n);
 		break;
-	case 3:	// gần như có thứ tự
+	case 3: // gần như có thứ tự
 		GenerateNearlySortedData(a, n);
 		break;
 	default:
