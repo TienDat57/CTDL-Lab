@@ -79,6 +79,7 @@ void GenerateData(int a[], int n, int dataType)
 		printf("Error: unknown data type!\n");
 	}
 }
+
 // ShakerSort
 void ShakerSort_time(int a[], int n)
 {
@@ -143,6 +144,7 @@ void ShakerSort_compare(int a[], int n,long long& count_compare)
 		left = k;
 	}
 }
+
 // MergeSort
 void Merge_time(int arr[], int left, int mid, int right)
 {
@@ -189,7 +191,6 @@ void Merge_time(int arr[], int left, int mid, int right)
         ++k;
     }
 }
- 
 void MergeSort_time(int arr[], int left, int right)
 {
     if (left < right)
@@ -200,6 +201,7 @@ void MergeSort_time(int arr[], int left, int right)
         Merge_time(arr, left, mid, right);
     }
 }
+
 void Merge_compare(int arr[], int left, int mid, int right,long long& count_compare)
 {
     int n1 = mid - left + 1;
@@ -246,7 +248,6 @@ void Merge_compare(int arr[], int left, int mid, int right,long long& count_comp
         ++k;
     }
 }
- 
 void MergeSort_compare(int arr[], int left, int right,long long& count_compare)
 {
     if (left < right)
