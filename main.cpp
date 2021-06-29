@@ -1,91 +1,392 @@
-#include <iostream>
-#include <string>
-#include <cstring>
+#include "data.h"
+#include "sort.h"
+#include <iomanip>
 
 using namespace std;
 
-void _cmd_1(char* Algorithm, string given_Input, string Output_parameter)
+// Display Functions
+void show_Order(string input_order)
 {
-    cout << "loading command line 1..." << endl;
-}
-
-void _cmd_2(char* Algorithm, int input_size, string input_order, string Output_parameter)
-{
-    cout << "loading command line 2..." << endl;
-}
-
-void _cmd_3(char* Algorithm, int input_size, string Ouput_parameter)
-{
-    cout << "loading command line 3..." << endl;
-}
-
-void _cmd_4(char* Algorithm1, char* Algorithm2, string givenInput) {
-    cout << "loading command line 4..." << endl;
-}
-
-void _cmd_5(char* Algorithm1, char* Algorithm2, int intput_size, string input_order) {
-    cout << "loading command line 5..." << endl;
-}
-
-void _algorithm(char* algorithm, char* s1, char* s2, char* s3 = NULL)
-{
-    if (s1[0] < '0' || s1[0] > '9')
+    cout << "Input order: ";
+    bool check = 0;
+    if (input_order == "-rand")
     {
-        string givenInput(s1);
-        string Ouput_parameter(s2);
-        _cmd_1(algorithm, s1, s2);
+        cout << "Randomized" << endl;
+        check = 1;
     }
+    if (input_order == "-nsorted")
+    {
+        cout << "Nearly sorted" << endl;
+        check = 1;
+    }
+    if (input_order == "-sorted")
+    {
+        cout << "Sorted" << endl;
+        check = 1;
+    }
+    if (input_order == "-rev")
+    {
+        cout << "Reversed" << endl;
+        check = 1;
+    }
+    // if (check == 0) cout << "Can't operate " << input_order << endl;
+}
+
+void showAlgorithm(string algo)
+{
+    bool check = 0;
+    if (algo == "selection-sort")
+    {
+        cout << "Selection Sort";
+        check = 1;
+    }
+    if (algo == "insertion-sort")
+    {
+        cout << "Insertion Sort";
+        check = 1;
+    }
+    if (algo == "bubble-sort")
+    {
+        cout << "Bubble Sort";
+        check = 1;
+    }
+    if (algo == "shaker-sort")
+    {
+        cout << "Shaker Sort";
+        check = 1;
+    }
+    if (algo == "shell-sort")
+    {
+        cout << "Shell Sort";
+        check = 1;
+    }
+    if (algo == "heap-sort")
+    {
+        cout << "Heap Sort";
+        check = 1;
+    }
+    if (algo == "merge-sort")
+    {
+        cout << "Merge Sort";
+        check = 1;
+    }
+    if (algo == "quick-sort")
+    {
+        cout << "Quick Sort";
+        check = 1;
+    }
+    if (algo == "counting-sort")
+    {
+        cout << "Counting Sort";
+        check = 1;
+    }
+    if (algo == "radix-sort")
+    {
+        cout << "Radix Sort";
+        check = 1;
+    }
+    if (algo == "flash-sort")
+    {
+        cout << "Flash Sort";
+        check = 1;
+    }
+    if (check == 0)
+        cout << "Error: unknown sorting algorithm!";
+}
+
+void WriteFile(string file_name, int *a, int n)
+{
+    ofstream f(file_name, ios::out);
+    if (f.fail())
+        cout << "Cannot open " << file_name << " file !" << endl;
     else
     {
-        if (s3 != NULL)
-        {
-            // cmd 2
-            int size = atoi(s1);
-            string order(s2);
-            string Ouput_parameter(s3);
-            _cmd_2(algorithm, size, order, Ouput_parameter);
-        }
-        else
-        {
-            // cmd 3
-            int size = atoi(s1);
-            string Ouput_parameter(s2);
-            _cmd_3(algorithm, size, Ouput_parameter);
-        }
+        f << n << endl;
+        for (int i = 0; i < n; i++)
+            f << a[i] << " ";
+        f.close();
     }
 }
 
-void _comparasion(char* algorithm1, char* algorithm2, char* s1, char* s2 = NULL)
+void Output_res_algorithm(string para, double time, long long comp)
 {
-    if (s1[0] < '0' || s1[0] > '9')
+    int mode = 0;
+    if (para == "-time")
+        mode = 1;
+    if (para == "-comp")
+        mode = 2;
+    if (para == "-both")
+        mode = 3;
+    cout << "--------------------------" << endl;
+    switch (mode)
     {
-        string givenInput(s1);
-        _cmd_4(algorithm1, algorithm2, givenInput);
-    } 
-    else {
-        int size = atoi(s1);
-        string order(s2);
-        _cmd_5(algorithm1, algorithm2, size, order);
+    case 1:
+        cout << fixed << setprecision(3) << "Running time: " << time << 's' << endl;
+        break;
+    case 2:
+        cout << "Comparisions: " << comp << endl;
+        break;
+    case 3:
+        cout << fixed << setprecision(3) << "Running time: " << time << 's' << endl;
+        cout << "Comparisions: " << comp << endl;
+        break;
+    default:
+        cout << "Error: unknown output parameter!" << endl;
+        break;
     }
 }
 
-int main(int argc, char* argv[])
+void Output_res_compare(string para, double time1, long long comp1, double time2, long long comp2)
 {
-    if (argc < 5)
-        cout << "Invalid command - Too few arguments !" << endl;
-    else
+    int mode = 0;
+    if (para == "-time")
+        mode = 1;
+    if (para == "-comp")
+        mode = 2;
+    if (para == "-both")
+        mode = 3;
+    cout << "--------------------------" << endl;
+    switch (mode)
     {
-        if (argc > 6)
-            cout << "Invalid command - Too many arguments !" << endl;
-        else
-        {
-            if (strcmp(argv[1], "-a") == 0)
-                _algorithm(argv[2], argv[3], argv[4], argv[5]);
-            else
-                _comparasion(argv[2], argv[3], argv[4], argv[5]);
-        }
+    case 1:
+        cout << fixed << setprecision(3) << "Running time: " << time1 << 's' << " | " << time2 << 's' << endl;
+        break;
+    case 2:
+        cout << "Comparisions: " << comp1 << " | " << comp2 << endl;
+        break;
+    case 3:
+        cout << fixed << setprecision(3) << "Running time: " << time1 << 's' << " | " << time2 << 's' << endl;
+        cout << "Comparisions: " << comp1 << " | " << comp2 << endl;
+        break;
+    default:
+        cout << "Error: unknown output parameter!" << para << endl;
+        break;
     }
-    return 0;
+}
+
+// Calculating Functions --------------------------------------------------------------------------------------
+void generate_input_Order(int *a, int n, string input_Order)
+{
+    int mode = -1;
+    if (input_Order == "-rand")
+        mode = 0;
+    if (input_Order == "-nsorted")
+        mode = 1;
+    if (input_Order == "-sorted")
+        mode = 3;
+    if (input_Order == "-rev")
+        mode = 2;
+    GenerateData(a, n, mode);
+    if (mode == -1)
+        a = NULL;
+}
+
+void solveAlgoritm(string algo, int *a, int n, double &time, long long &cc, string para)
+{
+    int mode = 0;
+    if (algo == "selection-sort")
+        mode = 1;
+    if (algo == "insertion-sort")
+        mode = 2;
+    if (algo == "bubble-sort")
+        mode = 3;
+    if (algo == "shaker-sort")
+        mode = 4;
+    if (algo == "shell-sort")
+        mode = 5;
+    if (algo == "heap-sort")
+        mode = 6;
+    if (algo == "merge-sort")
+        mode = 7;
+    if (algo == "quick-sort")
+        mode = 8;
+    if (algo == "counting-sort")
+        mode = 9;
+    if (algo == "radix-sort")
+        mode = 10;
+    if (algo == "flash-sort")
+        mode = 11;
+
+    int mode_para = 0;
+    if (para == "-time")
+        mode_para = 1;
+    if (para == "-comp")
+        mode_para = 2;
+    if (para == "-both")
+        mode_para = 3;
+
+    int *temp = new int[n];
+    for (int i = 0; i < n; i++)
+        temp[i] = a[i];
+
+    cc = 0;
+    clock_t start, end;
+    switch (mode)
+    {
+    case 1:
+        if (mode_para == 3 || mode_para == 1)
+        {
+            start = clock();
+            // sort - time
+            end = clock();
+            time = double(end - start) / CLOCKS_PER_SEC;
+            mode_para--;
+        }
+        if (mode_para == 2) // sort - compare
+            break;
+    case 2:
+        if (mode_para == 3 || mode_para == 1)
+        {
+            start = clock();
+            // sort - time
+            end = clock();
+            time = double(end - start) / CLOCKS_PER_SEC;
+            mode_para--;
+        }
+        if (mode_para == 2) // sort - compare
+            break;
+    case 3:
+        if (mode_para == 3 || mode_para == 1)
+        {
+            start = clock();
+            // sort - time
+            end = clock();
+            time = double(end - start) / CLOCKS_PER_SEC;
+            mode_para--;
+        }
+        if (mode_para == 2) // sort - compare
+            break;
+    case 4:
+        if (mode_para == 3 || mode_para == 1)
+        {
+            start = clock();
+            ShakerSort_time(a, n);
+            end = clock();
+            time = double(end - start) / CLOCKS_PER_SEC;
+            mode_para--;
+        }
+        if (mode_para == 2) 
+            ShakerSort_compare(temp, n, cc);
+            break;
+    case 5:
+        if (mode_para == 3 || mode_para == 1)
+        {
+            start = clock();
+            shellSort_time(a, n);
+            end = clock();
+            time = double(end - start) / CLOCKS_PER_SEC;
+            mode_para--;
+        }
+        if (mode_para == 2)
+            shellSort_compare(temp, n, cc);
+        break;
+    case 6:
+        if (mode_para == 3 || mode_para == 1)
+        {
+            start = clock();
+            heapSort_time(a, n);
+            end = clock();
+            time = double(end - start) / CLOCKS_PER_SEC;
+            mode_para--;
+        }
+        if (mode_para == 2)
+            heapSort_compare(temp, n, cc);
+        break;
+    case 7:
+        if (mode_para == 3 || mode_para == 1)
+        {
+            start = clock();
+            // sort - time
+            end = clock();
+            time = double(end - start) / CLOCKS_PER_SEC;
+            mode_para--;
+        }
+        if (mode_para == 2) // sort - compare
+            break;
+    case 8:
+        if (mode_para == 3 || mode_para == 1)
+        {
+            start = clock();
+            QuickSort_time(a, 0, n - 1);
+            end = clock();
+            time = double(end - start) / CLOCKS_PER_SEC;
+            mode_para--;
+        }
+        if (mode_para == 2)
+            QuickSort_compare(temp, 0, n - 1, cc);
+        break;
+    case 9:
+        if (mode_para == 3 || mode_para == 1)
+        {
+            start = clock();
+            CountingSort_time(a, n);
+            end = clock();
+            time = double(end - start) / CLOCKS_PER_SEC;
+            mode_para--;
+        }
+        if (mode_para == 2)
+            CountingSort_compare(temp, n, cc);
+        break;
+    case 10:
+        if (mode_para == 3 || mode_para == 1)
+        {
+            start = clock();
+            radixSort_time(a, n);
+            end = clock();
+            time = double(end - start) / CLOCKS_PER_SEC;
+            mode_para--;
+        }
+        if (mode_para == 2)
+            radixSort_compare(temp, n, cc);
+        break;
+    case 11:
+        if (mode_para == 3 || mode_para == 1)
+        {
+            start = clock();
+            FlashSort_time(a, n);
+            end = clock();
+            time = double(end - start) / CLOCKS_PER_SEC;
+            mode_para--;
+        }
+        if (mode_para == 2)
+            FlashSort_compare(temp, n, cc);
+        break;
+    }
+    delete[] temp;
+}
+
+int *ReadFile(string file_name, int &n)
+{
+    ifstream f(file_name, ios::in);
+    if (f.fail())
+    {
+        cout << "Cannot open " << file_name << " file" << endl;
+        return NULL;
+    }
+    f >> n;
+    int *a = new int[n];
+    for (int i = 0; i < n; i++)
+        f >> a[i];
+    f.close();
+    return a;
+}
+
+// Command line -------------------------------------------------------------------------------------------
+void _cmd_1(char *Algorithm, string given_Input, string Output_parameter)
+{
+    cout << "Algorithm: ";
+    string algo(Algorithm);
+    showAlgorithm(algo);
+    cout << endl;
+    int n;
+    int *a = ReadFile(given_Input, n);
+    double time = 0;
+    long long count_compare = 0;
+    solveAlgoritm(algo, a, n, time, count_compare, Output_parameter);
+    cout << "Input file: " << given_Input << endl;
+    cout << "Input size: " << n << endl;
+    Output_res_algorithm(Output_parameter, time, count_compare);
+    WriteFile("output.txt", a, n);
 }
 
 void _cmd_2(char *Algorithm, int input_size, string input_order, string Output_parameter)

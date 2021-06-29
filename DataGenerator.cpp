@@ -60,7 +60,7 @@ void GenerateNearlySortedData(int a[], int n)
 	}
 }
 
-void GenerateData(int *a, int n, int dataType)
+void GenerateData(int a[], int n, int dataType)
 {
 	switch (dataType)
 	{
