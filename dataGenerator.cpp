@@ -1,4 +1,5 @@
-﻿#include"dataGenerator.h"
+﻿#include "data.h"
+
 template <class T>
 void HoanVi(T &a, T &b)
 {
@@ -10,7 +11,7 @@ void HoanVi(T &a, T &b)
 //-------------------------------------------------
 
 // Hàm phát sinh mảng dữ liệu ngẫu nhiên
-void GenerateRandomData(int a[], int n)
+void GenerateRandomData(int *a, int n)
 {
 	srand((unsigned int)time(NULL));
 
@@ -21,7 +22,7 @@ void GenerateRandomData(int a[], int n)
 }
 
 // Hàm phát sinh mảng dữ liệu có thứ tự tăng dần
-void GenerateSortedData(int a[], int n)
+void GenerateSortedData(int *a, int n)
 {
 	for (int i = 0; i < n; i++)
 	{
@@ -30,7 +31,7 @@ void GenerateSortedData(int a[], int n)
 }
 
 // Hàm phát sinh mảng dữ liệu có thứ tự ngược (giảm dần)
-void GenerateReverseData(int a[], int n)
+void GenerateReverseData(int *a, int n)
 {
 	for (int i = 0; i < n; i++)
 	{
@@ -39,7 +40,7 @@ void GenerateReverseData(int a[], int n)
 }
 
 // Hàm phát sinh mảng dữ liệu gần như có thứ tự
-void GenerateNearlySortedData(int a[], int n)
+void GenerateNearlySortedData(int *a, int n)
 {
 	for (int i = 0; i < n; i++)
 	{
@@ -54,29 +55,23 @@ void GenerateNearlySortedData(int a[], int n)
 	}
 }
 
-void GenerateData(int a[], int n, int dataType)
+void GenerateData(int *a, int n, int dataType)
 {
 	switch (dataType)
 	{
-	case 0:	// ngẫu nhiên
+	case 0: // ngẫu nhiên
 		GenerateRandomData(a, n);
 		break;
-	case 1:	// có thứ tự
+	case 1: // có thứ tự
 		GenerateSortedData(a, n);
 		break;
-	case 2:	// có thứ tự ngược
+	case 2: // có thứ tự ngược
 		GenerateReverseData(a, n);
 		break;
-	case 3:	// gần như có thứ tự
+	case 3: // gần như có thứ tự
 		GenerateNearlySortedData(a, n);
 		break;
 	default:
 		printf("Error: unknown data type!\n");
 	}
-}
-void printArr(int a[], int n)
-{
-	for (int i = 0; i < n; i++)
-		cout << a[i] << " ";
-	cout << endl;
 }
