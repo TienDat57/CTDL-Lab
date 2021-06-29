@@ -1,5 +1,6 @@
 #include "data.h"
 #include "sort.h"
+#include <iomanip>
 
 using namespace std;
 
@@ -120,13 +121,13 @@ void Output_res_algorithm(string para, double time, long long comp)
     switch (mode)
     {
     case 1:
-        cout << "Running time: " << time << 's' << endl;
+        cout << fixed << setprecision(3) << "Running time: " << time << 's' << endl;
         break;
     case 2:
         cout << "Comparisions: " << comp << endl;
         break;
     case 3:
-        cout << "Running time: " << time << 's' << endl;
+        cout << fixed << setprecision(3) << "Running time: " << time << 's' << endl;
         cout << "Comparisions: " << comp << endl;
         break;
     default:
@@ -148,13 +149,13 @@ void Output_res_compare(string para, double time1, long long comp1, double time2
     switch (mode)
     {
     case 1:
-        cout << "Running time: " << time1 << 's' << " | " << time2 << 's' << endl;
+        cout << fixed << setprecision(3) << "Running time: " << time1 << 's' << " | " << time2 << 's' << endl;
         break;
     case 2:
         cout << "Comparisions: " << comp1 << " | " << comp2 << endl;
         break;
     case 3:
-        cout << "Running time: " << time1 << 's' << " | " << time2 << 's' << endl;
+        cout << fixed << setprecision(3) << "Running time: " << time1 << 's' << " | " << time2 << 's' << endl;
         cout << "Comparisions: " << comp1 << " | " << comp2 << endl;
         break;
     default:
@@ -259,12 +260,13 @@ void solveAlgoritm(string algo, int *a, int n, double &time, long long &cc, stri
         if (mode_para == 3 || mode_para == 1)
         {
             start = clock();
-            // sort - time
+            ShakerSort_time(a, n);
             end = clock();
             time = double(end - start) / CLOCKS_PER_SEC;
             mode_para--;
         }
-        if (mode_para == 2) // sort - compare
+        if (mode_para == 2) 
+            ShakerSort_compare(temp, n, cc);
             break;
     case 5:
         if (mode_para == 3 || mode_para == 1)
@@ -276,7 +278,7 @@ void solveAlgoritm(string algo, int *a, int n, double &time, long long &cc, stri
             mode_para--;
         }
         if (mode_para == 2)
-            shellSort_compare(a, n, cc);
+            shellSort_compare(temp, n, cc);
         break;
     case 6:
         if (mode_para == 3 || mode_para == 1)
@@ -288,7 +290,7 @@ void solveAlgoritm(string algo, int *a, int n, double &time, long long &cc, stri
             mode_para--;
         }
         if (mode_para == 2)
-            heapSort_compare(a, n, cc);
+            heapSort_compare(temp, n, cc);
         break;
     case 7:
         if (mode_para == 3 || mode_para == 1)
@@ -335,7 +337,7 @@ void solveAlgoritm(string algo, int *a, int n, double &time, long long &cc, stri
             mode_para--;
         }
         if (mode_para == 2)
-            radixSort_compare(a, n, cc);
+            radixSort_compare(temp, n, cc);
         break;
     case 11:
         if (mode_para == 3 || mode_para == 1)

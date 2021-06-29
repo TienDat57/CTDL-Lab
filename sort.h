@@ -40,7 +40,6 @@ int index_compare(int *a, int low, int high, long long &count_compare)
     }
     return l;
 }
-
 void QuickSort_compare(int *a, int low, int high, long long &count_compare)
 {
     int pi = index_compare(a, low, high, count_compare);
@@ -70,7 +69,6 @@ int index_time(int *a, int low, int high)
     }
     return l;
 }
-
 void QuickSort_time(int *a, int low, int high)
 {
     int pi = index_time(a, low, high);
@@ -105,7 +103,6 @@ void CountingSort_compare(int *a, int n, long long &count_compare)
         a[i] = res[i];
     }
 }
-
 void CountingSort_time(int *a, int n)
 {
     int max = *max_element(a, a + n);
@@ -204,7 +201,6 @@ void FlashSort_compare(int *a, int n, long long &count_compare)
         a[vt] = nam;
     }
 }
-
 void FlashSort_time(int *a, int n)
 {
     int minVal = *min_element(a, a + n);
@@ -312,49 +308,54 @@ void shellSort_time(int a[], int n)
 }
 
 //radix sort
-void radixSort_compare(int a[], int n, long long &count_compare)
+void countSort_compare(int arr[], int n, int exp,long long &compare)
 {
-    int b[5], m = a[0], exp = 1;
+    vector <int> output(n); 
+    int i, count[10] = { 0 };
 
-    for (int i = 0; ++count_compare && i < n; i++)
-        if (++count_compare && a[i] > m)
-            m = a[i];
+    for (i = 0; ++compare && i < n; i++)
+        count[(arr[i] / exp) % 10]++;
 
-    while (++count_compare && m / exp > 0)
-    {
-        int bucket[10] = {0};
-        for (int i = 0; ++count_compare && i < n; i++)
-            bucket[a[i] / exp % 10]++;
-        for (int i = 1; ++count_compare && i < 10; i++)
-            bucket[i] += bucket[i - 1];
-        for (int i = n - 1; ++count_compare && i >= 0; i--)
-            b[--bucket[a[i] / exp % 10]] = a[i];
-        for (int i = 0; ++count_compare && i < n; i++)
-            a[i] = b[i];
-        exp *= 10;
+    for (i = 1; ++compare && i < 10; i++)
+        count[i] += count[i - 1];
+
+    for (i = n - 1; ++compare && i >= 0; i--) {
+        output[count[(arr[i] / exp) % 10] - 1] = arr[i];
+        count[(arr[i] / exp) % 10]--;
     }
+    for (i = 0; ++compare && i < n; i++)
+        arr[i] = output[i];
+}
+void radixSort_compare(int a[], int n, long long &compare)
+{
+    int m = *max_element(a, a + n);
+    for (int exp = 1; ++compare && m / exp > 0; exp *= 10)
+        countSort_compare(a, n, exp, compare);
+}
+
+void countSort_time(int arr[], int n, int exp)
+{
+    vector <int> output(n); 
+    int i, count[10] = { 0 };
+
+    for (i = 0; i < n; i++)
+        count[(arr[i] / exp) % 10]++;
+
+    for (i = 1; i < 10; i++)
+        count[i] += count[i - 1];
+
+    for (i = n - 1; i >= 0; i--) {
+        output[count[(arr[i] / exp) % 10] - 1] = arr[i];
+        count[(arr[i] / exp) % 10]--;
+    }
+    for (i = 0; i < n; i++)
+        arr[i] = output[i];
 }
 void radixSort_time(int a[], int n)
 {
-    int b[5], max = a[0], exp = 1;
-
-    for (int i = 0; i < n; i++)
-        if (a[i] > max)
-            max = a[i];
-
-    while (max / exp > 0)
-    {
-        int bucket[10] = {0};
-        for (int i = 0; i < n; i++)
-            bucket[a[i] / exp % 10]++;
-        for (int i = 1; i < 10; i++)
-            bucket[i] += bucket[i - 1];
-        for (int i = n - 1; i >= 0; i--)
-            b[--bucket[a[i] / exp % 10]] = a[i];
-        for (int i = 0; i < n; i++)
-            a[i] = b[i];
-        exp *= 10;
-    }
+    int m = *max_element(a, a + n);
+    for (int exp = 1; m / exp > 0; exp *= 10)
+        countSort_time(a, n, exp);
 }
 
 //heap sort
@@ -412,4 +413,45 @@ void heapSort_time(int a[], int n)
     }
 }
 
+// shaker sort
+void ShakerSort_compare(int a[], int n, long long& count_compare){
+    bool stop = true;
+    int L = 0, R = n - 1;
+    while (++count_compare && L < R) {
+        stop = true;
+        for (int i = L; ++count_compare && i < R; ++i)
+            if (++count_compare && a[i] > a[i + 1])
+                swap(a[i], a[i + 1]), 
+                stop = false;
+        if (++count_compare && stop) break;
+        --R;
+        stop = true;
+        for (int i = R - 1; ++count_compare &&  i >= L; --i)
+            if (++count_compare && a[i] > a[i + 1])
+                swap(a[i], a[i + 1]),
+                stop = false;
+        if (++count_compare && stop) break;
+        ++L;
+    }
+}
+void ShakerSort_time(int a[], int n) {
+    bool stop = true;
+    int L = 0, R = n - 1;
+    while (L < R) {
+        stop = true;
+        for (int i = L; i < R; ++i)
+            if (a[i] > a[i + 1])
+                swap(a[i], a[i + 1]), 
+                stop = false;
+        if (stop) break;
+        --R;
+        stop = true;
+        for (int i = R - 1; i >= L; --i)
+            if (a[i] > a[i + 1])
+                swap(a[i], a[i + 1]),
+                stop = false;
+        if (stop) break;
+        ++L;
+    }
+}
 #endif
