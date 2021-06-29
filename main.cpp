@@ -249,12 +249,12 @@ void solveAlgoritm(string algo, int *a, int n, double &time, long long &cc, stri
         if (mode_para == 3 || mode_para == 1)
         {
             start = clock();
-            // sort - time
+            BubbleSort_time(a, n);
             end = clock();
             time = double(end - start) / CLOCKS_PER_SEC;
             mode_para--;
         }
-        if (mode_para == 2) // sort - compare
+        if (mode_para == 2) BubbleSort_compare(temp, n, cc);
             break;
     case 4:
         if (mode_para == 3 || mode_para == 1)
@@ -296,12 +296,12 @@ void solveAlgoritm(string algo, int *a, int n, double &time, long long &cc, stri
         if (mode_para == 3 || mode_para == 1)
         {
             start = clock();
-            // sort - time
+            MergeSort_time(a, 0, n -1);
             end = clock();
             time = double(end - start) / CLOCKS_PER_SEC;
             mode_para--;
         }
-        if (mode_para == 2) // sort - compare
+        if (mode_para == 2) MergeSort_compare(temp, 0, n - 1, cc);
             break;
     case 8:
         if (mode_para == 3 || mode_para == 1)
