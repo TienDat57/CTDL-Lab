@@ -311,52 +311,6 @@ void shellSort_time(int a[], int n)
     }
 }
 
-//radix sort
-void radixSort_compare(int a[], int n, long long &count_compare)
-{
-    int b[5], m = a[0], exp = 1;
-
-    for (int i = 0; ++count_compare && i < n; i++)
-        if (++count_compare && a[i] > m)
-            m = a[i];
-
-    while (++count_compare && m / exp > 0)
-    {
-        int bucket[10] = {0};
-        for (int i = 0; ++count_compare && i < n; i++)
-            bucket[a[i] / exp % 10]++;
-        for (int i = 1; ++count_compare && i < 10; i++)
-            bucket[i] += bucket[i - 1];
-        for (int i = n - 1; ++count_compare && i >= 0; i--)
-            b[--bucket[a[i] / exp % 10]] = a[i];
-        for (int i = 0; ++count_compare && i < n; i++)
-            a[i] = b[i];
-        exp *= 10;
-    }
-}
-void radixSort_time(int a[], int n)
-{
-    int b[5], max = a[0], exp = 1;
-
-    for (int i = 0; i < n; i++)
-        if (a[i] > max)
-            max = a[i];
-
-    while (max / exp > 0)
-    {
-        int bucket[10] = {0};
-        for (int i = 0; i < n; i++)
-            bucket[a[i] / exp % 10]++;
-        for (int i = 1; i < 10; i++)
-            bucket[i] += bucket[i - 1];
-        for (int i = n - 1; i >= 0; i--)
-            b[--bucket[a[i] / exp % 10]] = a[i];
-        for (int i = 0; i < n; i++)
-            a[i] = b[i];
-        exp *= 10;
-    }
-}
-
 //heap sort
 void heapify_compare(int a[], int n, int i, long long &compare)
 {
@@ -410,6 +364,73 @@ void heapSort_time(int a[], int n)
         swap(a[0], a[i]);
         heapify_time(a, i, 0);
     }
+}
+
+//radix sort
+void countSort_compare(int a[], int n, int exp, long long &compare)
+{
+    int res[n];
+    int i, count[10] = {0};
+
+    for (i = 0; ++compare && i < n; i++)
+        count[(a[i] / exp) % 10]++;
+
+    for (i = 1; ++compare && i < 10; i++)
+        count[i] += count[i - 1];
+
+    for (i = n - 1; ++compare && i >= 0; i--)
+    {
+        res[count[(a[i] / exp) % 10] - 1] = a[i];
+        count[(a[i] / exp) % 10]--;
+    }
+
+    for (i = 0; ++compare && i < n; i++)
+        a[i] = res[i];
+}
+void radixSort_compare(int a[], int n, long long &compare)
+{
+    int max = a[0];
+    for (int i = 1; ++compare && i < n; i++)
+    {
+        if (++compare && a[i] > max)
+            max = a[i];
+    }
+
+    for (int exp = 1; ++compare && max / exp > 0; exp *= 10)
+        countSort_compare(a, n, exp, compare);
+}
+
+void countSort_time(int a[], int n, int exp)
+{
+    int res[n];
+    int i, count[10] = {0};
+
+    for (i = 0; i < n; i++)
+        count[(a[i] / exp) % 10]++;
+
+    for (i = 1; i < 10; i++)
+        count[i] += count[i - 1];
+
+    for (i = n - 1; i >= 0; i--)
+    {
+        res[count[(a[i] / exp) % 10] - 1] = a[i];
+        count[(a[i] / exp) % 10]--;
+    }
+
+    for (i = 0; i < n; i++)
+        a[i] = res[i];
+}
+void radixSort_time(int a[], int n)
+{
+    int max = a[0];
+    for (int i = 1; i < n; i++)
+    {
+        if (a[i] > max)
+            max = a[i];
+    }
+
+    for (int exp = 1; max / exp > 0; exp *= 10)
+        countSort_time(a, n, exp);
 }
 
 #endif
