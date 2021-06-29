@@ -82,167 +82,167 @@ void GenerateData(int a[], int n, int dataType)
 // ShakerSort
 void ShakerSort_time(int a[], int n)
 {
-	int i, j, k;
-	for(i = 0; i < n;)
+	int left = 0;
+	int right = n - 1;
+	int k = 0;
+	for (int i = left; i <= right; ++i)
 	{
-		for(j = i+1; j < n; j++)
-		{
-			if(a[j] < a[j-1])
-				HoanVi(a[j], a[j-1]);
-		}
-		n--;
-		for(k = n-1; k > i; k--)
-		{
-			if(a[k] < a[k-1])
-				HoanVi(a[k],a[k-1]);
-		}
-		i++;
+		bool swapped = false;
+		for (int j = left; j < right; ++j)
+			if (a[j] > a[j + 1])
+			{
+				swapped = true;
+				HoanVi(a[j], a[j + 1]);
+				k = j;
+			}
+		if (!swapped)
+			return;
+		right = k;
+		swapped = false;
+		for (int j = right; j > left; --j)
+			if (a[j] < a[j - 1])
+			{
+				swapped = true;
+				HoanVi(a[j], a[j - 1]);
+				k = j;
+			}
+		if (!swapped)
+			return;
+		left = k;
 	}
 }
 void ShakerSort_compare(int a[], int n,long long& count_compare)
 {
-	int i, j, k;
-	for(i = 0; ++count_compare && i < n;)
+	int left = 0;
+	int right = n - 1;
+	int k = 0;
+	for (int i = left;++count_compare && i <= right; ++i)
 	{
-		for(j = i+1; ++count_compare && j < n; j++)
-		{
-			if(++count_compare && a[j] < a[j-1])
-				HoanVi(a[j], a[j-1]);
-		}
-		n--;
-		for(k = n-1;++count_compare && k > i; k--)
-		{
-			if(++count_compare && a[k] < a[k-1])
-				HoanVi(a[k],a[k-1]);
-		}
-		i++;
+		bool swapped = false;
+		for (int j = left;++count_compare && j < right; ++j)
+			if (++count_compare && a[j] > a[j + 1])
+			{
+				swapped = true;
+				HoanVi(a[j], a[j + 1]);
+				k = j;
+			}
+		if (!swapped)
+			return;
+		right = k;
+		swapped = false;
+		for (int j = right;++count_compare && j > left; --j)
+			if (++count_compare && a[j] < a[j - 1])
+			{
+				swapped = true;
+				HoanVi(a[j], a[j - 1]);
+				k = j;
+			}
+		if (++count_compare && !swapped)
+			return;
+
+		left = k;
 	}
 }
 // MergeSort
-void Merge_compare(int array[], int const left, int const mid, int const right, long long& count_compare)
+void Merge_time(int a[], int first, int mid, int last)
 {
-    auto const subArrayOne = mid - left + 1;
-    auto const subArrayTwo = right - mid;
+	int n1 = mid - first + 1;
+	int n2 = last - mid;
+	int *L = new int[n1];
+	int *R = new int[n2];
+	for (int i = 0; i < n1; ++i)
+		L[i] = a[first + i];
+	for (int j = 0; j < n2; ++j)
+		R[j] = a[mid + j + 1];
+	int i = 0;
+	int j = 0;
+	int k = first;
+	while (i < n1 && j < n2)
+		a[++k] = (L[i] < R[j]) ? L[++i] : R[++j];
 
-    auto *leftArray = new int[subArrayOne],
-         *rightArray = new int[subArrayTwo];
+	while (j < n2)
+		a[++k] = R[++j];
+	while (i < n1)
+		a[++k] = L[++i];
+	delete[] L;
+	delete[] R;
+}
+void MergeSort_time(int a[], int first, int last)
+{
+	if (first < last)
+	{
+		int mid = first + (last - first) / 2;
+		MergeSort_time(a, first, mid);
+		MergeSort_time(a, mid + 1, last);
+		Merge_time(a, first, mid, last);
+	}
+}
+void Merge_compare(int a[], int first, int mid, int last,long long& count_compare)
+{
+	int n1 = mid - first + 1;
+	int n2 = last - mid;
+	int *L = new int[n1];
+	int *R = new int[n2];
+	for (int i = 0;++count_compare && i < n1; ++i)
+		L[i] = a[first + i];
+	for (int j = 0;++count_compare && j < n2; ++j)
+		R[j] = a[mid + j + 1];
+	int i = 0;
+	int j = 0;
+	int k = first;
+	while (++count_compare && i < n1 && j < n2)
+		a[++k] = (L[i] < R[j]) ? L[++i] : R[++j];
 
-    for (auto i = 0;++count_compare && i < subArrayOne; i++)
-        leftArray[i] = array[left + i];
-    for (auto j = 0;++count_compare && j < subArrayTwo; j++)
-        rightArray[j] = array[mid + 1 + j];
-
-    auto indexOfSubArrayOne = 0, 
-        indexOfSubArrayTwo = 0; 
-    int indexOfMergedArray = left; 
-
-    while (++++count_compare && indexOfSubArrayOne < subArrayOne && indexOfSubArrayTwo < subArrayTwo) {
-        if (++count_compare && leftArray[indexOfSubArrayOne] <= rightArray[indexOfSubArrayTwo]) {
-            array[indexOfMergedArray] = leftArray[indexOfSubArrayOne];
-            indexOfSubArrayOne++;
-        }
-        else {
-            array[indexOfMergedArray] = rightArray[indexOfSubArrayTwo];
-            indexOfSubArrayTwo++;
-        }
-        indexOfMergedArray++;
-    }
-
-    while (++count_compare && indexOfSubArrayOne < subArrayOne) {
-        array[indexOfMergedArray] = leftArray[indexOfSubArrayOne];
-        indexOfSubArrayOne++;
-        indexOfMergedArray++;
-    }
-
-    while (++count_compare && indexOfSubArrayTwo < subArrayTwo) {
-        array[indexOfMergedArray] = rightArray[indexOfSubArrayTwo];
-        indexOfSubArrayTwo++;
-        indexOfMergedArray++;
-    }
+	while (++count_compare && j < n2)
+		a[++k] = R[++j];
+	while (++count_compare && i < n1)
+		a[++k] = L[++i];
+	delete[] L;
+	delete[] R;
+}
+void MergeSort_compare(int a[], int first, int last,long long& count_compare)
+{
+	if (++count_compare && first < last)
+	{
+		int mid = first + (last - first) / 2;
+		MergeSort_compare(a, first, mid,count_compare);
+		MergeSort_compare(a, mid + 1, last,count_compare);
+		Merge_compare(a, first, mid, last,count_compare);
+	}
 }
 
-void MergeSort_compare(int array[], int const begin, int const end,long long& count_compare)
-{
-    if (++count_compare && begin >= end)
-        return; 
-
-    auto mid = begin + (end - begin) / 2;
-    MergeSort_compare(array, begin, mid, count_compare);
-    MergeSort_compare(array, mid + 1, end, count_compare);
-    Merge_compare(array, begin, mid, end, count_compare);
-}
-void Merge_time(int array[], int const left, int const mid, int const right)
-{
-    auto const subArrayOne = mid - left + 1;
-    auto const subArrayTwo = right - mid;
-
-    auto *leftArray = new int[subArrayOne],
-         *rightArray = new int[subArrayTwo];
-
-    for (auto i = 0; i < subArrayOne; i++)
-        leftArray[i] = array[left + i];
-    for (auto j = 0; j < subArrayTwo; j++)
-        rightArray[j] = array[mid + 1 + j];
-
-    auto indexOfSubArrayOne = 0, 
-        indexOfSubArrayTwo = 0; 
-    int indexOfMergedArray = left; 
-
-    while (indexOfSubArrayOne < subArrayOne && indexOfSubArrayTwo < subArrayTwo) {
-        if (leftArray[indexOfSubArrayOne] <= rightArray[indexOfSubArrayTwo]) {
-            array[indexOfMergedArray] = leftArray[indexOfSubArrayOne];
-            indexOfSubArrayOne++;
-        }
-        else {
-            array[indexOfMergedArray] = rightArray[indexOfSubArrayTwo];
-            indexOfSubArrayTwo++;
-        }
-        indexOfMergedArray++;
-    }
-
-    while (indexOfSubArrayOne < subArrayOne) {
-        array[indexOfMergedArray] = leftArray[indexOfSubArrayOne];
-        indexOfSubArrayOne++;
-        indexOfMergedArray++;
-    }
-
-    while (indexOfSubArrayTwo < subArrayTwo) {
-        array[indexOfMergedArray] = rightArray[indexOfSubArrayTwo];
-        indexOfSubArrayTwo++;
-        indexOfMergedArray++;
-    }
-}
-
-void MergeSort_time(int array[], int const begin, int const end)
-{
-    if (begin >= end)
-        return; 
-
-    auto mid = begin + (end - begin) / 2;
-    MergeSort_time(array, begin, mid);
-    MergeSort_time(array, mid + 1, end);
-    Merge_time(array, begin, mid, end);
-}
 // BubbleSort
-void BubbleSort_time(int arr[], int n)
-{
-    int i, j;
-    for (i = 0; i < n-1; i++)    
- 
-    for (j = 0; j < n-i-1; j++)
-        if (arr[j] > arr[j+1])
-            HoanVi(arr[j], arr[j+1]);
-}
-void BubbleSort_compare(int arr[], int n,long long& count_compare )
-{
-    int i, j;
-    for (i = 0;++count_compare && i < n-1; i++)    
- 
-    for (j = 0;++count_compare && j < n-i-1; j++)
-        if (++count_compare && arr[j] > arr[j+1])
-            HoanVi(arr[j], arr[j+1]);
-}
 
+void BubbleSort_time(int a[], int n)
+{
+	for (int i = n - 1; i >= 0; --i)
+	{
+		bool swapped = false;
+		for (int j = 0; j < i; ++j)
+			if (a[j] > a[j + 1])
+			{
+				swapped = true;
+				HoanVi(a[j], a[j + 1]);
+			}
+		if (!swapped)
+			return;
+	}
+}
+void BubbleSort_compare(int a[], int n,long long& count_compare)
+{
+	for (int i = n - 1; i >= 0; --i)
+	{
+		bool swapped = false;
+		for ( int j = 0;++count_compare && j < i; ++j)
+			if (++count_compare && a[j] > a[j + 1])
+			{
+				swapped = true;
+				HoanVi(a[j], a[j + 1]);
+			}
+		if (++count_compare && !swapped)
+			return;
+	}
+}
 
 void show_Order(string input_order){
     cout << "Input order: ";
