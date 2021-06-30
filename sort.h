@@ -629,12 +629,10 @@ void SelectionSort_compare(int* a, int n, long long& count_compare)
 {
     for (int i = 0; ++count_compare && i < n; i++)
     {
-        int m = a[i];
         int mIndex = i;
         for (int j = i; ++count_compare && j < n; j++)
-            if (++count_compare && a[j] < a[i])
+            if (++count_compare && a[j] < mIndex)
             {
-                m = a[j];
                 mIndex = j;
             }
         swap(a[i], a[mIndex]);
@@ -644,12 +642,10 @@ void SelectionSort_time(int* a, int n)
 {
     for (int i = 0; i < n; i++)
     {
-        int m = a[i];
         int mIndex = i;
         for (int j = i; j < n; j++)
-            if (a[j] < a[i])
+            if (a[j] < mIndex)
             {
-                m = a[j];
                 mIndex = j;
             }
         swap(a[i], a[mIndex]);
