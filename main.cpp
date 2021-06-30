@@ -206,6 +206,8 @@ void solveAlgoritm(string algo, int *a, int n, double &time, long long &cc, stri
         mode = 10;
     if (algo == "flash-sort")
         mode = 11;
+    if (algo == "binary-insertion-sort")
+        mode = 11;
 
     int mode_para = 0;
     if (para == "-time")
@@ -343,6 +345,18 @@ void solveAlgoritm(string algo, int *a, int n, double &time, long long &cc, stri
             mode_para--;
         }
         if (mode_para == 2) FlashSort_compare(temp, n, cc);
+        break;
+    }
+    case 12:
+        if (mode_para == 3 || mode_para == 1)
+        {
+            start = clock();
+            BinaryInsertionSort_time(a, n);
+            end = clock();
+            time = double(end - start) / CLOCKS_PER_SEC;
+            mode_para--;
+        }
+        if (mode_para == 2) BinaryInsertionSort_compare(temp, n, cc);
         break;
     }
     delete[] temp;

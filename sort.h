@@ -681,4 +681,50 @@ void InsertionSort_time(int* a, int n)
         a[k + 1] = key;
     }
 }
+
+// Binary Insertion Sort
+void  BinaryInsertionSort_time(int* a, int n)
+{
+    for (int i = 1; i < n; i++)
+    {
+        int temp = a[i];
+        int left = 0;
+        int right = i - 1;
+        while (left <= right)
+        {
+            int mid = (left + right) / 2;
+            if (temp < a[mid])
+            {
+                right = mid - 1;
+            }
+            else left = mid + 1;
+        }
+        for (int j = i - 1; j >= left; j--) {
+            a[j + 1] = a[j];
+        }
+        a[left] = temp;
+    }
+}
+void  BinaryInsertionSort_compare(int* a, int n, long long& count_compare)
+{
+    for (int i = 1; ++count_compare && i < n; i++)
+    {
+        int temp = a[i];
+        int left = 0;
+        int right = i - 1;
+        while (++count_compare && left <= right)
+        {
+            int mid = (left + right) / 2;
+            if (++count_compare && temp < a[mid])
+            {
+                right = mid - 1;
+            }
+            else left = mid + 1;
+        }
+        for (int j = i - 1; ++count_compare && j >= left; j--) {
+            a[j + 1] = a[j];
+        }
+        a[left] = temp;
+    }
+}
 #endif
