@@ -413,45 +413,318 @@ void heapSort_time(int a[], int n)
     }
 }
 
-// shaker sort
-void ShakerSort_compare(int a[], int n, long long& count_compare){
-    bool stop = true;
-    int L = 0, R = n - 1;
-    while (++count_compare && L < R) {
-        stop = true;
-        for (int i = L; ++count_compare && i < R; ++i)
-            if (++count_compare && a[i] > a[i + 1])
-                swap(a[i], a[i + 1]), 
-                stop = false;
-        if (++count_compare && stop) break;
-        --R;
-        stop = true;
-        for (int i = R - 1; ++count_compare &&  i >= L; --i)
-            if (++count_compare && a[i] > a[i + 1])
-                swap(a[i], a[i + 1]),
-                stop = false;
-        if (++count_compare && stop) break;
-        ++L;
+// Shaker Sort
+void ShakerSort_time(int a[], int n)
+{
+	int left = 0;
+	int right = n - 1;
+	int k = 0;
+	for (int i = left; i <= right; ++i)
+	{
+		bool swapped = false;
+		for (int j = left; j < right; ++j)
+			if (a[j] > a[j + 1])
+			{
+				swapped = true;
+				HoanVi(a[j], a[j + 1]);
+				k = j;
+			}
+		if (!swapped)
+			return;
+		right = k;
+		swapped = false;
+		for (int j = right; j > left; --j)
+			if (a[j] < a[j - 1])
+			{
+				swapped = true;
+				HoanVi(a[j], a[j - 1]);
+				k = j;
+			}
+		if (!swapped)
+			return;
+		left = k;
+	}
+}
+void ShakerSort_compare(int a[], int n,long long& count_compare)
+{
+	int left = 0;
+	int right = n - 1;
+	int k = 0;
+	for (int i = left;++count_compare && i <= right; ++i)
+	{
+		bool swapped = false;
+		for (int j = left;++count_compare && j < right; ++j)
+			if (++count_compare && a[j] > a[j + 1])
+			{
+				swapped = true;
+				HoanVi(a[j], a[j + 1]);
+				k = j;
+			}
+		if (!swapped)
+			return;
+		right = k;
+		swapped = false;
+		for (int j = right;++count_compare && j > left; --j)
+			if (++count_compare && a[j] < a[j - 1])
+			{
+				swapped = true;
+				HoanVi(a[j], a[j - 1]);
+				k = j;
+			}
+		if (++count_compare && !swapped)
+			return;
+
+		left = k;
+	}
+}
+
+// Merge Sort
+void Merge_time(int arr[], int left, int mid, int right)
+{
+    int n1 = mid - left + 1;
+    int n2 =  right - mid;
+ 
+    int* L = new int[n1];
+    int* R = new int [n2];
+ 
+    for (int ii = 0; ii < n1; ++ii)
+        L[ii] = arr[left + ii];
+    for (int jj = 0; jj < n2; ++jj)
+        R[jj] = arr[mid + 1+ jj];
+ 
+    int i = 0;
+    int j = 0;
+    int k = left;
+    while (i < n1 && j < n2)
+    {
+        if (L[i] <= R[j])
+        {
+            arr[k] = L[i];
+            ++i;
+        }
+        else
+        {
+            arr[k] = R[j];
+            ++j;
+        }
+        ++k;
+    }
+ 
+    while (i < n1)
+    {
+        arr[k] = L[i];
+        ++i;
+        ++k;
+    }
+ 
+    while (j < n2)
+    {
+        arr[k] = R[j];
+        ++j;
+        ++k;
     }
 }
-void ShakerSort_time(int a[], int n) {
-    bool stop = true;
-    int L = 0, R = n - 1;
-    while (L < R) {
-        stop = true;
-        for (int i = L; i < R; ++i)
-            if (a[i] > a[i + 1])
-                swap(a[i], a[i + 1]), 
-                stop = false;
-        if (stop) break;
-        --R;
-        stop = true;
-        for (int i = R - 1; i >= L; --i)
-            if (a[i] > a[i + 1])
-                swap(a[i], a[i + 1]),
-                stop = false;
-        if (stop) break;
-        ++L;
+void MergeSort_time(int arr[], int left, int right)
+{
+    if (left < right)
+    {
+        int mid = left +(right -left)/2;
+        MergeSort_time(arr, left, mid);
+        MergeSort_time(arr, ++mid , right);
+        Merge_time(arr, left, mid, right);
+    }
+}
+
+void Merge_compare(int arr[], int left, int mid, int right,long long& count_compare)
+{
+    int n1 = mid - left + 1;
+    int n2 =  right - mid;
+ 
+    int* L = new int[n1];
+    int* R = new int [n2];
+ 
+    for (int ii = 0; ++count_compare && ii < n1; ++ii)
+        L[ii] = arr[left + ii];
+    for (int jj = 0; ++count_compare && jj < n2; ++jj)
+        R[jj] = arr[mid + 1+ jj];
+ 
+    int i = 0;
+    int j = 0;
+    int k = left;
+    while (++count_compare && i < n1 && j < n2)
+    {
+        ++count_compare ;
+        if (++count_compare && L[i] <= R[j])
+        {
+            arr[k] = L[i];
+            ++i;
+        }
+        else
+        {
+            arr[k] = R[j];
+            ++j;
+        }
+        ++k;
+    }
+ 
+    while (++count_compare && i < n1)
+    {
+        arr[k] = L[i];
+        ++i;
+        ++k;
+    }
+ 
+    while (++count_compare && j < n2)
+    {
+        arr[k] = R[j];
+        ++j;
+        ++k;
+    }
+}
+void MergeSort_compare(int arr[], int left, int right,long long& count_compare)
+{
+    if (++count_compare && left < right)
+    {
+        int mid = left +(right -left)/2;
+        MergeSort_compare(arr, left, mid, count_compare);
+        MergeSort_compare(arr, ++mid , right, count_compare);
+        Merge_compare(arr, left, mid, right, count_compare);
+    }
+}
+
+// Bubble Sort
+void BubbleSort_time(int a[], int n)
+{
+	for (int i = n - 1; i >= 0; --i)
+	{
+		bool swapped = false;
+		for (int j = 0; j < i; ++j)
+			if (a[j] > a[j + 1])
+			{
+				swapped = true;
+				HoanVi(a[j], a[j + 1]);
+			}
+		if (!swapped)
+			return;
+	}
+}
+void BubbleSort_compare(int a[], int n,long long& count_compare)
+{
+	for (int i = n - 1; i >= 0; --i)
+	{
+		bool swapped = false;
+		for ( int j = 0;++count_compare && j < i; ++j)
+			if (++count_compare && a[j] > a[j + 1])
+			{
+				swapped = true;
+				HoanVi(a[j], a[j + 1]);
+			}
+		if (++count_compare && !swapped)
+			return;
+	}
+}
+
+//SelectionSort
+void SelectionSort_compare(int* a, int n, long long& count_compare)
+{
+    for (int i = 0; ++count_compare && i < n; i++)
+    {
+        int mIndex = i;
+        for (int j = i; ++count_compare && j < n; j++)
+            if (++count_compare && a[j] < mIndex)
+            {
+                mIndex = j;
+            }
+        swap(a[i], a[mIndex]);
+    }
+}
+void SelectionSort_time(int* a, int n)
+{
+    for (int i = 0; i < n; i++)
+    {
+        int mIndex = i;
+        for (int j = i; j < n; j++)
+            if (a[j] < mIndex)
+            {
+                mIndex = j;
+            }
+        swap(a[i], a[mIndex]);
+    }
+}
+
+//InsertionSort
+void InsertionSort_compare(int* a, int n, long long& count_compare)
+{
+    for (int i = 1; ++count_compare && i < n; i++)
+    {
+        int k = i - 1;
+        int key = a[i];
+        while (++count_compare && a[k] > key && ++count_compare && k >= 0)
+        {
+            a[k + 1] = a[k];
+            k--;
+        }
+        a[k + 1] = key;
+    }
+}
+void InsertionSort_time(int* a, int n)
+{
+    for (int i = 1; i < n; i++)
+    {
+        int k = i - 1;
+        int key = a[i];
+        while (a[k] > key && k >= 0)
+        {
+            a[k + 1] = a[k];
+            k--;
+        }
+        a[k + 1] = key;
+    }
+}
+
+// Binary Insertion Sort
+void  BinaryInsertionSort_time(int* a, int n)
+{
+    for (int i = 1; i < n; i++)
+    {
+        int temp = a[i];
+        int left = 0;
+        int right = i - 1;
+        while (left <= right)
+        {
+            int mid = (left + right) / 2;
+            if (temp < a[mid])
+            {
+                right = mid - 1;
+            }
+            else left = mid + 1;
+        }
+        for (int j = i - 1; j >= left; j--) {
+            a[j + 1] = a[j];
+        }
+        a[left] = temp;
+    }
+}
+void  BinaryInsertionSort_compare(int* a, int n, long long& count_compare)
+{
+    for (int i = 1; ++count_compare && i < n; i++)
+    {
+        int temp = a[i];
+        int left = 0;
+        int right = i - 1;
+        while (++count_compare && left <= right)
+        {
+            int mid = (left + right) / 2;
+            if (++count_compare && temp < a[mid])
+            {
+                right = mid - 1;
+            }
+            else left = mid + 1;
+        }
+        for (int j = i - 1; ++count_compare && j >= left; j--) {
+            a[j + 1] = a[j];
+        }
+        a[left] = temp;
     }
 }
 #endif
