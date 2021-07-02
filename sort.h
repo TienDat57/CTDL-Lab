@@ -1,7 +1,6 @@
 #pragma once
 #ifndef SORT_H
 #define SORT_H
-#include <iostream>
 #include <string>
 #include <cstring>
 #include <fstream>
@@ -683,7 +682,7 @@ void InsertionSort_time(int* a, int n)
 }
 
 // Binary Insertion Sort
-void  BinaryInsertionSort_time(int* a, int n)
+void BinaryInsertionSort_time(int* a, int n)
 {
     for (int i = 1; i < n; i++)
     {
@@ -705,7 +704,7 @@ void  BinaryInsertionSort_time(int* a, int n)
         a[left] = temp;
     }
 }
-void  BinaryInsertionSort_compare(int* a, int n, long long& count_compare)
+void BinaryInsertionSort_compare(int* a, int n, long long& count_compare)
 {
     for (int i = 1; ++count_compare && i < n; i++)
     {

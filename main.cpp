@@ -229,40 +229,40 @@ void solveAlgoritm(string algo, int *a, int n, double &time, long long &cc, stri
         if (mode_para == 3 || mode_para == 1)
         {
             start = clock();
-            // sort - time
+            if (mode != 0) SelectionSort_time(a, n);
             end = clock();
             time = double(end - start) / CLOCKS_PER_SEC;
             mode_para--;
         }
-        if (mode_para == 2) // sort - compare
+        if (mode_para == 2) SelectionSort_compare(temp,n, cc);
             break;
     case 2:
         if (mode_para == 3 || mode_para == 1)
         {
             start = clock();
-            // sort - time
+            if (mode != 0) InsertionSort_time(a, n);
             end = clock();
             time = double(end - start) / CLOCKS_PER_SEC;
             mode_para--;
         }
-        if (mode_para == 2) // sort - compare
+        if (mode_para == 2) InsertionSort_compare(temp, n, cc);
             break;
     case 3:
         if (mode_para == 3 || mode_para == 1)
         {
             start = clock();
-            // sort - time
+            if (mode != 0) BubbleSort_time(a, n);
             end = clock();
             time = double(end - start) / CLOCKS_PER_SEC;
             mode_para--;
         }
-        if (mode_para == 2) // sort - compare
+        if (mode_para == 2) BubbleSort_compare(temp, n, cc);
             break;
     case 4:
         if (mode_para == 3 || mode_para == 1)
         {
             start = clock();
-            ShakerSort_time(a, n);
+            if (mode != 0) ShakerSort_time(a, n);
             end = clock();
             time = double(end - start) / CLOCKS_PER_SEC;
             mode_para--;
@@ -274,7 +274,7 @@ void solveAlgoritm(string algo, int *a, int n, double &time, long long &cc, stri
         if (mode_para == 3 || mode_para == 1)
         {
             start = clock();
-            shellSort_time(a, n);
+            if (mode != 0) shellSort_time(a, n);
             end = clock();
             time = double(end - start) / CLOCKS_PER_SEC;
             mode_para--;
@@ -286,7 +286,7 @@ void solveAlgoritm(string algo, int *a, int n, double &time, long long &cc, stri
         if (mode_para == 3 || mode_para == 1)
         {
             start = clock();
-            heapSort_time(a, n);
+            if (mode != 0) heapSort_time(a, n);
             end = clock();
             time = double(end - start) / CLOCKS_PER_SEC;
             mode_para--;
@@ -298,18 +298,18 @@ void solveAlgoritm(string algo, int *a, int n, double &time, long long &cc, stri
         if (mode_para == 3 || mode_para == 1)
         {
             start = clock();
-            // sort - time
+            if (mode != 0) MergeSort_time(a, 0, n-1);
             end = clock();
             time = double(end - start) / CLOCKS_PER_SEC;
             mode_para--;
         }
-        if (mode_para == 2) // sort - compare
+        if (mode_para == 2) MergeSort_compare(temp, 0, n-1, cc);
             break;
     case 8:
         if (mode_para == 3 || mode_para == 1)
         {
             start = clock();
-            QuickSort_time(a, 0, n - 1);
+            if (mode != 0) QuickSort_time(a, 0, n - 1);
             end = clock();
             time = double(end - start) / CLOCKS_PER_SEC;
             mode_para--;
@@ -321,7 +321,7 @@ void solveAlgoritm(string algo, int *a, int n, double &time, long long &cc, stri
         if (mode_para == 3 || mode_para == 1)
         {
             start = clock();
-            CountingSort_time(a, n);
+            if (mode != 0) CountingSort_time(a, n);
             end = clock();
             time = double(end - start) / CLOCKS_PER_SEC;
             mode_para--;
@@ -333,7 +333,7 @@ void solveAlgoritm(string algo, int *a, int n, double &time, long long &cc, stri
         if (mode_para == 3 || mode_para == 1)
         {
             start = clock();
-            radixSort_time(a, n);
+            if (mode != 0) radixSort_time(a, n);
             end = clock();
             time = double(end - start) / CLOCKS_PER_SEC;
             mode_para--;
@@ -345,7 +345,7 @@ void solveAlgoritm(string algo, int *a, int n, double &time, long long &cc, stri
         if (mode_para == 3 || mode_para == 1)
         {
             start = clock();
-            FlashSort_time(a, n);
+            if (mode != 0) FlashSort_time(a, n);
             end = clock();
             time = double(end - start) / CLOCKS_PER_SEC;
             mode_para--;
@@ -357,7 +357,7 @@ void solveAlgoritm(string algo, int *a, int n, double &time, long long &cc, stri
         if (mode_para == 3 || mode_para == 1)
         {
             start = clock();
-            BinaryInsertionSort_time(a, n);
+            if (mode != 0) BinaryInsertionSort_time(a, n);
             end = clock();
             time = double(end - start) / CLOCKS_PER_SEC;
             mode_para--;
