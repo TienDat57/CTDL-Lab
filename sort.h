@@ -609,7 +609,7 @@ void BubbleSort_time(int a[], int n)
 }
 void BubbleSort_compare(int a[], int n,long long& count_compare)
 {
-	for (int i = n - 1; i >= 0; --i)
+	for (int i = n - 1;+count_compare && i >= 0; --i)
 	{
 		bool swapped = false;
 		for ( int j = 0;++count_compare && j < i; ++j)
