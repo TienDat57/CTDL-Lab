@@ -121,13 +121,13 @@ void Output_res_algorithm(string para, double time, long long comp)
     switch (mode)
     {
     case 1:
-        cout << fixed << setprecision(3) << "Running time: " << time << 's' << endl;
+        cout << fixed << setprecision(3) << "Running time: " << time* 1000.0 << "ms" << endl;
         break;
     case 2:
         cout << "Comparisions: " << comp << endl;
         break;
     case 3:
-        cout << fixed << setprecision(3) << "Running time: " << time << 's' << endl;
+        cout << fixed << setprecision(3) << "Running time: " << time* 1000.0 << "" << endl;
         cout << "Comparisions: " << comp << endl;
         break;
     default:
@@ -149,13 +149,13 @@ void Output_res_compare(string para, double time1, long long comp1, double time2
     switch (mode)
     {
     case 1:
-        cout << fixed << setprecision(3) << "Running time: " << time1 << 's' << " | " << time2 << 's' << endl;
+        cout << fixed << setprecision(3) << "Running time: " << time1 * 1000.0 << "ms" << " | " << time2 * 1000.0 << "ms" << endl;
         break;
     case 2:
         cout << "Comparisions: " << comp1 << " | " << comp2 << endl;
         break;
     case 3:
-        cout << fixed << setprecision(3) << "Running time: " << time1 << 's' << " | " << time2 << 's' << endl;
+        cout << fixed << setprecision(3) << "Running time: " << time1* 1000.0 << "ms" << " | " << time2* 1000.0 << "s" << endl;
         cout << "Comparisions: " << comp1 << " | " << comp2 << endl;
         break;
     default:
@@ -207,11 +207,7 @@ void solveAlgoritm(string algo, int *a, int n, double &time, long long &cc, stri
     if (algo == "flash-sort")
         mode = 11;
     if (algo == "binary-insertion-sort")
-<<<<<<< HEAD
-        mode = 11;
-=======
         mode = 12;
->>>>>>> nam
 
     int mode_para = 0;
     if (para == "-time")
@@ -233,18 +229,18 @@ void solveAlgoritm(string algo, int *a, int n, double &time, long long &cc, stri
         if (mode_para == 3 || mode_para == 1)
         {
             start = clock();
-            SelectionSort_time(a, n);
+            if (mode != 0) SelectionSort_time(a, n);
             end = clock();
             time = double(end - start) / CLOCKS_PER_SEC;
             mode_para--;
         }
-        if (mode_para == 2) SelectionSort_compare(temp, n, cc);
+        if (mode_para == 2) SelectionSort_compare(temp,n, cc);
             break;
     case 2:
         if (mode_para == 3 || mode_para == 1)
         {
             start = clock();
-            InsertionSort_time(a, n);
+            if (mode != 0) InsertionSort_time(a, n);
             end = clock();
             time = double(end - start) / CLOCKS_PER_SEC;
             mode_para--;
@@ -255,7 +251,7 @@ void solveAlgoritm(string algo, int *a, int n, double &time, long long &cc, stri
         if (mode_para == 3 || mode_para == 1)
         {
             start = clock();
-            BubbleSort_time(a, n);
+            if (mode != 0) BubbleSort_time(a, n);
             end = clock();
             time = double(end - start) / CLOCKS_PER_SEC;
             mode_para--;
@@ -266,113 +262,102 @@ void solveAlgoritm(string algo, int *a, int n, double &time, long long &cc, stri
         if (mode_para == 3 || mode_para == 1)
         {
             start = clock();
-            ShakerSort_time(a, n);
+            if (mode != 0) ShakerSort_time(a, n);
             end = clock();
             time = double(end - start) / CLOCKS_PER_SEC;
             mode_para--;
         }
-<<<<<<< HEAD
-        if (mode_para == 2) ShakerSort_compare(temp, n, cc);
-            break;
-=======
         if (mode_para == 2)
             ShakerSort_compare(temp, n, cc);
         break;
->>>>>>> nam
     case 5:
         if (mode_para == 3 || mode_para == 1)
         {
             start = clock();
-            shellSort_time(a, n);
+            if (mode != 0) shellSort_time(a, n);
             end = clock();
             time = double(end - start) / CLOCKS_PER_SEC;
             mode_para--;
         }
-        if (mode_para == 2) shellSort_compare(temp, n, cc);
+        if (mode_para == 2)
+            shellSort_compare(temp, n, cc);
         break;
     case 6:
         if (mode_para == 3 || mode_para == 1)
         {
             start = clock();
-            heapSort_time(a, n);
+            if (mode != 0) heapSort_time(a, n);
             end = clock();
             time = double(end - start) / CLOCKS_PER_SEC;
             mode_para--;
         }
-        if (mode_para == 2) heapSort_compare(temp, n, cc);
+        if (mode_para == 2)
+            heapSort_compare(temp, n, cc);
         break;
     case 7:
         if (mode_para == 3 || mode_para == 1)
         {
             start = clock();
-            MergeSort_time(a, 0, n -1);
+            if (mode != 0) MergeSort_time(a, 0, n-1);
             end = clock();
             time = double(end - start) / CLOCKS_PER_SEC;
             mode_para--;
         }
-        if (mode_para == 2) MergeSort_compare(temp, 0, n - 1, cc);
+        if (mode_para == 2) MergeSort_compare(temp, 0, n-1, cc);
             break;
     case 8:
         if (mode_para == 3 || mode_para == 1)
         {
             start = clock();
-            QuickSort_time(a, 0, n - 1);
+            if (mode != 0) QuickSort_time(a, 0, n - 1);
             end = clock();
             time = double(end - start) / CLOCKS_PER_SEC;
             mode_para--;
         }
-        if (mode_para == 2) QuickSort_compare(temp, 0, n - 1, cc);
+        if (mode_para == 2)
+            QuickSort_compare(temp, 0, n - 1, cc);
         break;
     case 9:
         if (mode_para == 3 || mode_para == 1)
         {
             start = clock();
-            CountingSort_time(a, n);
+            if (mode != 0) CountingSort_time(a, n);
             end = clock();
             time = double(end - start) / CLOCKS_PER_SEC;
             mode_para--;
         }
-        if (mode_para == 2) CountingSort_compare(temp, n, cc);
+        if (mode_para == 2)
+            CountingSort_compare(temp, n, cc);
         break;
     case 10:
         if (mode_para == 3 || mode_para == 1)
         {
             start = clock();
-            radixSort_time(a, n);
+            if (mode != 0) radixSort_time(a, n);
             end = clock();
             time = double(end - start) / CLOCKS_PER_SEC;
             mode_para--;
         }
-        if (mode_para == 2) radixSort_compare(temp, n, cc);
+        if (mode_para == 2)
+            radixSort_compare(temp, n, cc);
         break;
     case 11:
         if (mode_para == 3 || mode_para == 1)
         {
             start = clock();
-            FlashSort_time(a, n);
+            if (mode != 0) FlashSort_time(a, n);
             end = clock();
             time = double(end - start) / CLOCKS_PER_SEC;
             mode_para--;
         }
-        if (mode_para == 2) FlashSort_compare(temp, n, cc);
-        break;
-    }
-    case 12:
-        if (mode_para == 3 || mode_para == 1)
-        {
-            start = clock();
-            BinaryInsertionSort_time(a, n);
-            end = clock();
-            time = double(end - start) / CLOCKS_PER_SEC;
-            mode_para--;
-        }
-        if (mode_para == 2) BinaryInsertionSort_compare(temp, n, cc);
+        if (mode_para == 2)
+            FlashSort_compare(temp, n, cc);
         break;
     case 12:
         if (mode_para == 3 || mode_para == 1)
         {
             start = clock();
-            BinaryInsertionSort_time(a, n);
+            if (mode != 0) BinaryInsertionSort_time(a, n);
             end = clock();
             time = double(end - start) / CLOCKS_PER_SEC;
             mode_para--;
@@ -494,8 +479,6 @@ void _cmd_3(char *Algorithm, int input_size, string Output_parameter)
     solveAlgoritm(algo, a, n, time, count_compare, Output_parameter);
     Output_res_algorithm(Output_parameter, time, count_compare);
     cout << endl;
-
-    delete [] a;
 }
 
 void _cmd_4(char *Algorithm1, char *Algorithm2, string givenInput)
