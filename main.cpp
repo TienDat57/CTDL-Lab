@@ -127,7 +127,7 @@ void Output_res_algorithm(string para, double time, long long comp)
         cout << "Comparisions: " << comp << endl;
         break;
     case 3:
-        cout << fixed << setprecision(3) << "Running time: " << time* 1000.0 << "" << endl;
+        cout << fixed << setprecision(3) << "Running time: " << time* 1000.0 << "ms" << endl;
         cout << "Comparisions: " << comp << endl;
         break;
     default:
