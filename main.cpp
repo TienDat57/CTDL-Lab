@@ -121,13 +121,13 @@ void Output_res_algorithm(string para, double time, long long comp)
     switch (mode)
     {
     case 1:
-        cout << fixed << setprecision(3) << "Running time: " << time << 's' << endl;
+        cout << fixed << setprecision(3) << "Running time: " << time* 1000.0 << "ms" << endl;
         break;
     case 2:
         cout << "Comparisions: " << comp << endl;
         break;
     case 3:
-        cout << fixed << setprecision(3) << "Running time: " << time << 's' << endl;
+        cout << fixed << setprecision(3) << "Running time: " << time* 1000.0 << "ms" << endl;
         cout << "Comparisions: " << comp << endl;
         break;
     default:
@@ -149,13 +149,13 @@ void Output_res_compare(string para, double time1, long long comp1, double time2
     switch (mode)
     {
     case 1:
-        cout << fixed << setprecision(3) << "Running time: " << time1 << 's' << " | " << time2 << 's' << endl;
+        cout << fixed << setprecision(3) << "Running time: " << time1 * 1000.0 << "ms" << " | " << time2 * 1000.0 << "ms" << endl;
         break;
     case 2:
         cout << "Comparisions: " << comp1 << " | " << comp2 << endl;
         break;
     case 3:
-        cout << fixed << setprecision(3) << "Running time: " << time1 << 's' << " | " << time2 << 's' << endl;
+        cout << fixed << setprecision(3) << "Running time: " << time1* 1000.0 << "ms" << " | " << time2* 1000.0 << "s" << endl;
         cout << "Comparisions: " << comp1 << " | " << comp2 << endl;
         break;
     default:
