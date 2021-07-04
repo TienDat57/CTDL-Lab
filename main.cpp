@@ -155,7 +155,7 @@ void Output_res_compare(string para, double time1, long long comp1, double time2
         cout << "Comparisions: " << comp1 << " | " << comp2 << endl;
         break;
     case 3:
-        cout << fixed << setprecision(3) << "Running time: " << time1* 1000.0 << "ms" << " | " << time2* 1000.0 << "s" << endl;
+         cout << fixed << setprecision(3) << "Running time: " << time1 * 1000.0 << "ms" << " | " << time2 * 1000.0 << "ms" << endl;
         cout << "Comparisions: " << comp1 << " | " << comp2 << endl;
         break;
     default:
