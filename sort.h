@@ -130,147 +130,100 @@ void CountingSort_time(int *a, int n)
 // Flash sort
 void FlashSort_compare(int *a, int n, long long &count_compare)
 {
-    int minVal = *min_element(a, a + n);
-    int maxVal = *max_element(a, a + n);
-    if (++count_compare && maxVal == minVal)
+    if (++count_compare && n <= 1) return;
+    int m = n * 0.43;
+    if (++count_compare && m <= 2) m = 2;
+    vector <int> __L(m);
+    // int m = n;
+    for (int i = 0;++count_compare && i < m; ++i)
+        __L[i] = 0;
+    int Mx = a[0], Mn = a[0];
+    for (int i = 1; ++count_compare && i < n; ++i) {
+        if (++count_compare && Mx < a[i]) Mx = a[i];
+        if (++count_compare && Mn > a[i]) Mn = a[i];
+    }
+    if (++count_compare && Mx == Mn)
         return;
-    int maxIndex = 0;
-    int bucket = int(0.45 * n);
 
-    vector<int> L(bucket);
+#define getK(x) 1ll * (m - 1) * (x - Mn) / (Mx - Mn)
 
-    for (int i = 0; ++count_compare && i < n; i++)
-    {
-        if (++count_compare && a[i] == maxVal)
-        {
-            maxIndex = i;
-            break;
+    for (int i = 0;++count_compare &&  i < n; ++i)
+        ++__L[getK(a[i])];
+    for (int i = 1;++count_compare &&  i < m; ++i)
+        __L[i] += __L[i - 1];
+    //step 2
+    int count = 0;
+    int i = 0;
+    while (++count_compare && count < n) {
+        int k = getK(a[i]);
+        while (++count_compare && i >= __L[k]) 
+            k = getK(a[++i]);
+        int z = a[i];
+        while (++count_compare && i != __L[k]) {
+            k = getK(z);
+            int y = a[__L[k] - 1];
+            a[--__L[k]] = z;
+            z = y;
+            ++count;
         }
-    }
-
-    double x = double((bucket - 1) / (a[maxIndex] - minVal));
-
-    for (int i = 0; ++count_compare && i < n; i++)
-    {
-        int k = int(x * (a[i] - minVal));
-        ++L[k];
-    }
-    // find the last element for each bucket
-    for (int i = 1; ++count_compare && i < bucket; i++)
-    {
-        L[i] += L[i - 1];
-    }
-
-    int hold = a[maxIndex];
-    int move = 0;
-    int flash = 0;
-    int k = bucket - 1;
-    int t = 0;
-    int j = 0;
-    while (++count_compare && move < n - 1)
-    {
-        while (++count_compare && j > L[k] - 1)
-        {
-            ++j;
-            k = int(x * (a[j] - minVal));
-        }
-        flash = a[j];
-        if (++count_compare && k < 0)
-            break;
-        while (++count_compare && j != L[k])
-        {
-            k = int(x * (flash - minVal));
-            hold = a[t = --L[k]];
-            a[t] = flash;
-            flash = hold;
-            ++move;
-        }
-    }
-    // use Insertion Sort
-    int vt, nam;
-    for (int i = 1; ++count_compare && i < n; i++)
-    {
-        nam = a[i];
-        vt = i;
-        while ((++count_compare && vt > 0) && (++count_compare && nam < a[vt - 1]))
-        {
-            a[vt] = a[vt - 1];
-            vt--;
-        }
-        a[vt] = nam;
+    }   
+    //step 3
+    for (int k = 1;++count_compare &&  k < m; ++k) {
+        for (int i = __L[k] - 2;++count_compare &&  i >= __L[k - 1]; --i)
+            if (++count_compare && a[i] > a[i + 1]) {
+                int t = a[i], j = i;
+                while (++count_compare && t > a[j + 1]) {a[j] = a[j + 1]; ++j;}
+                a[j] = t;
+            }
     }
 }
-void FlashSort_time(int *a, int n)
-{
-    int minVal = *min_element(a, a + n);
-    int maxVal = *max_element(a, a + n);
-    if (maxVal == minVal)
+void FlashSort_time(int a[], int n) {
+    if (n <= 1) return;
+    int m = n * 0.43;
+    if (m <= 2) m = 2;
+    vector <int> __L(m);
+    // int m = n;
+    for (int i = 0; i < m; ++i)
+        __L[i] = 0;
+    int Mx = a[0], Mn = a[0];
+    for (int i = 1; i < n; ++i) {
+        if (Mx < a[i]) Mx = a[i];
+        if (Mn > a[i]) Mn = a[i];
+    }
+    if (Mx == Mn)
         return;
-    int maxIndex = 0;
-    int bucket = int(0.45 * n);
-
-    vector<int> L(bucket);
-
-    for (int i = 0; i < n; i++)
-    {
-        if (a[i] == maxVal)
-        {
-            maxIndex = i;
-            break;
+#define getK(x) 1ll * (m - 1) * (x - Mn) / (Mx - Mn)
+    for (int i = 0; i < n; ++i)
+        ++__L[getK(a[i])];
+    for (int i = 1; i < m; ++i)
+        __L[i] += __L[i - 1];
+    //step 2
+    int count = 0;
+    int i = 0;
+    while (count < n) {
+        int k = getK(a[i]);
+        while (i >= __L[k]) 
+            k = getK(a[++i]);
+        int z = a[i];
+        while (i != __L[k]) {
+            k = getK(z);
+            int y = a[__L[k] - 1];
+            a[--__L[k]] = z;
+            z = y;
+            ++count;
         }
-    }
-
-    double x = double((bucket - 1) / (a[maxIndex] - minVal));
-    for (int i = 0; i < n; i++)
-    {
-        int k = int(x * (a[i] - minVal));
-        ++L[k];
-    }
-    // find the last element for each bucket
-    for (int i = 1; i < bucket; i++)
-    {
-        L[i] += L[i - 1];
-    }
-
-    int hold = a[maxIndex];
-    int move = 0;
-    int flash = 0;
-    int k = bucket - 1;
-    int t = 0;
-    int j = 0;
-    while (move < n - 1)
-    {
-        while (j > L[k] - 1)
-        {
-            ++j;
-            k = int(x * (a[j] - minVal));
-        }
-        flash = a[j];
-        if (k < 0)
-            break;
-        while (j != L[k])
-        {
-            k = int(x * (flash - minVal));
-            hold = a[t = --L[k]];
-            a[t] = flash;
-            flash = hold;
-            ++move;
-        }
-    }
-    // use Insertion Sort
-    int vt, nam;
-    for (int i = 1; i < n; i++)
-    {
-        nam = a[i];
-        vt = i;
-        while (vt > 0 && nam < a[vt - 1])
-        {
-            a[vt] = a[vt - 1];
-            vt--;
-        }
-        a[vt] = nam;
+    }   
+    //step 3
+    for (int k = 1; k < m; ++k) {
+        for (int i = __L[k] - 2; i >= __L[k - 1]; --i)
+            if (a[i] > a[i + 1]) {
+                int t = a[i], j = i;
+                while (t > a[j + 1]) {a[j] = a[j + 1]; ++j;}
+                a[j] = t;
+            }
     }
 }
+
 
 //shell sort
 void shellSort_compare(int a[], int n, long long &count_compare)
