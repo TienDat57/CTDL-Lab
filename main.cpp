@@ -175,12 +175,14 @@ void generate_input_Order(int *a, int n, string input_Order)
     int mode = -1;
     if (input_Order == "-rand")
         mode = 0;
-    if (input_Order == "-nsorted")
-        mode = 3;
     if (input_Order == "-sorted")
         mode = 1;
     if (input_Order == "-rev")
         mode = 2;
+    if (input_Order == "-nsorted")
+        mode = 3;
+    
+    
     GenerateData(a, n, mode);
     if (mode == -1)
         a = NULL;
