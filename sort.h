@@ -130,145 +130,124 @@ void CountingSort_time(int *a, int n)
 // Flash sort
 void FlashSort_compare(int *a, int n, long long &count_compare)
 {
-    int minVal = *min_element(a, a + n);
-    int maxVal = *max_element(a, a + n);
-    if (++count_compare && maxVal == minVal)
+    if (++count_compare && n <= 1)
         return;
-    int maxIndex = 0;
-    int bucket = int(0.45 * n);
-
-    vector<int> L(bucket);
-
-    for (int i = 0; ++count_compare && i < n; i++)
+    int m = n * 0.43;
+    if (++count_compare && m <= 2)
+        m = 2;
+    vector<int> __L(m);
+    // int m = n;
+    for (int i = 0; ++count_compare && i < m; ++i)
+        __L[i] = 0;
+    int Mx = a[0], Mn = a[0];
+    for (int i = 1; ++count_compare && i < n; ++i)
     {
-        if (++count_compare && a[i] == maxVal)
+        if (++count_compare && Mx < a[i])
+            Mx = a[i];
+        if (++count_compare && Mn > a[i])
+            Mn = a[i];
+    }
+    if (++count_compare && Mx == Mn)
+        return;
+
+#define getK(x) 1ll * (m - 1) * (x - Mn) / (Mx - Mn)
+
+    for (int i = 0; ++count_compare && i < n; ++i)
+        ++__L[getK(a[i])];
+    for (int i = 1; ++count_compare && i < m; ++i)
+        __L[i] += __L[i - 1];
+    //step 2
+    int count = 0;
+    int i = 0;
+    while (++count_compare && count < n)
+    {
+        int k = getK(a[i]);
+        while (++count_compare && i >= __L[k])
+            k = getK(a[++i]);
+        int z = a[i];
+        while (++count_compare && i != __L[k])
         {
-            maxIndex = i;
-            break;
+            k = getK(z);
+            int y = a[__L[k] - 1];
+            a[--__L[k]] = z;
+            z = y;
+            ++count;
         }
     }
-
-    double x = double((bucket - 1) / (a[maxIndex] - minVal));
-
-    for (int i = 0; ++count_compare && i < n; i++)
+    //step 3
+    for (int k = 1; ++count_compare && k < m; ++k)
     {
-        int k = int(x * (a[i] - minVal));
-        ++L[k];
-    }
-    // find the last element for each bucket
-    for (int i = 1; ++count_compare && i < bucket; i++)
-    {
-        L[i] += L[i - 1];
-    }
-
-    int hold = a[maxIndex];
-    int move = 0;
-    int flash = 0;
-    int k = bucket - 1;
-    int t = 0;
-    int j = 0;
-    while (++count_compare && move < n - 1)
-    {
-        while (++count_compare && j > L[k] - 1)
-        {
-            ++j;
-            k = int(x * (a[j] - minVal));
-        }
-        flash = a[j];
-        if (++count_compare && k < 0)
-            break;
-        while (++count_compare && j != L[k])
-        {
-            k = int(x * (flash - minVal));
-            hold = a[t = --L[k]];
-            a[t] = flash;
-            flash = hold;
-            ++move;
-        }
-    }
-    // use Insertion Sort
-    int vt, nam;
-    for (int i = 1; ++count_compare && i < n; i++)
-    {
-        nam = a[i];
-        vt = i;
-        while ((++count_compare && vt > 0) && (++count_compare && nam < a[vt - 1]))
-        {
-            a[vt] = a[vt - 1];
-            vt--;
-        }
-        a[vt] = nam;
+        for (int i = __L[k] - 2; ++count_compare && i >= __L[k - 1]; --i)
+            if (++count_compare && a[i] > a[i + 1])
+            {
+                int t = a[i], j = i;
+                while (++count_compare && t > a[j + 1])
+                {
+                    a[j] = a[j + 1];
+                    ++j;
+                }
+                a[j] = t;
+            }
     }
 }
-void FlashSort_time(int *a, int n)
+void FlashSort_time(int a[], int n)
 {
-    int minVal = *min_element(a, a + n);
-    int maxVal = *max_element(a, a + n);
-    if (maxVal == minVal)
+    if (n <= 1)
         return;
-    int maxIndex = 0;
-    int bucket = int(0.45 * n);
-
-    vector<int> L(bucket);
-
-    for (int i = 0; i < n; i++)
+    int m = n * 0.43;
+    if (m <= 2)
+        m = 2;
+    vector<int> __L(m);
+    // int m = n;
+    for (int i = 0; i < m; ++i)
+        __L[i] = 0;
+    int Mx = a[0], Mn = a[0];
+    for (int i = 1; i < n; ++i)
     {
-        if (a[i] == maxVal)
+        if (Mx < a[i])
+            Mx = a[i];
+        if (Mn > a[i])
+            Mn = a[i];
+    }
+    if (Mx == Mn)
+        return;
+#define getK(x) 1ll * (m - 1) * (x - Mn) / (Mx - Mn)
+    for (int i = 0; i < n; ++i)
+        ++__L[getK(a[i])];
+    for (int i = 1; i < m; ++i)
+        __L[i] += __L[i - 1];
+    //step 2
+    int count = 0;
+    int i = 0;
+    while (count < n)
+    {
+        int k = getK(a[i]);
+        while (i >= __L[k])
+            k = getK(a[++i]);
+        int z = a[i];
+        while (i != __L[k])
         {
-            maxIndex = i;
-            break;
+            k = getK(z);
+            int y = a[__L[k] - 1];
+            a[--__L[k]] = z;
+            z = y;
+            ++count;
         }
     }
-
-    double x = double((bucket - 1) / (a[maxIndex] - minVal));
-    for (int i = 0; i < n; i++)
+    //step 3
+    for (int k = 1; k < m; ++k)
     {
-        int k = int(x * (a[i] - minVal));
-        ++L[k];
-    }
-    // find the last element for each bucket
-    for (int i = 1; i < bucket; i++)
-    {
-        L[i] += L[i - 1];
-    }
-
-    int hold = a[maxIndex];
-    int move = 0;
-    int flash = 0;
-    int k = bucket - 1;
-    int t = 0;
-    int j = 0;
-    while (move < n - 1)
-    {
-        while (j > L[k] - 1)
-        {
-            ++j;
-            k = int(x * (a[j] - minVal));
-        }
-        flash = a[j];
-        if (k < 0)
-            break;
-        while (j != L[k])
-        {
-            k = int(x * (flash - minVal));
-            hold = a[t = --L[k]];
-            a[t] = flash;
-            flash = hold;
-            ++move;
-        }
-    }
-    // use Insertion Sort
-    int vt, nam;
-    for (int i = 1; i < n; i++)
-    {
-        nam = a[i];
-        vt = i;
-        while (vt > 0 && nam < a[vt - 1])
-        {
-            a[vt] = a[vt - 1];
-            vt--;
-        }
-        a[vt] = nam;
+        for (int i = __L[k] - 2; i >= __L[k - 1]; --i)
+            if (a[i] > a[i + 1])
+            {
+                int t = a[i], j = i;
+                while (t > a[j + 1])
+                {
+                    a[j] = a[j + 1];
+                    ++j;
+                }
+                a[j] = t;
+            }
     }
 }
 
@@ -307,10 +286,10 @@ void shellSort_time(int a[], int n)
 }
 
 //radix sort
-void countSort_compare(int arr[], int n, int exp,long long &compare)
+void countSort_compare(int arr[], int n, int exp, long long &compare)
 {
-    vector <int> output(n); 
-    int i, count[10] = { 0 };
+    vector<int> output(n);
+    int i, count[10] = {0};
 
     for (i = 0; ++compare && i < n; i++)
         count[(arr[i] / exp) % 10]++;
@@ -318,7 +297,8 @@ void countSort_compare(int arr[], int n, int exp,long long &compare)
     for (i = 1; ++compare && i < 10; i++)
         count[i] += count[i - 1];
 
-    for (i = n - 1; ++compare && i >= 0; i--) {
+    for (i = n - 1; ++compare && i >= 0; i--)
+    {
         output[count[(arr[i] / exp) % 10] - 1] = arr[i];
         count[(arr[i] / exp) % 10]--;
     }
@@ -334,8 +314,8 @@ void radixSort_compare(int a[], int n, long long &compare)
 
 void countSort_time(int arr[], int n, int exp)
 {
-    vector <int> output(n); 
-    int i, count[10] = { 0 };
+    vector<int> output(n);
+    int i, count[10] = {0};
 
     for (i = 0; i < n; i++)
         count[(arr[i] / exp) % 10]++;
@@ -343,7 +323,8 @@ void countSort_time(int arr[], int n, int exp)
     for (i = 1; i < 10; i++)
         count[i] += count[i - 1];
 
-    for (i = n - 1; i >= 0; i--) {
+    for (i = n - 1; i >= 0; i--)
+    {
         output[count[(arr[i] / exp) % 10] - 1] = arr[i];
         count[(arr[i] / exp) % 10]--;
     }
@@ -415,82 +396,82 @@ void heapSort_time(int a[], int n)
 // Shaker Sort
 void ShakerSort_time(int a[], int n)
 {
-	int left = 0;
-	int right = n - 1;
-	int k = 0;
-	for (int i = left; i <= right; ++i)
-	{
-		bool swapped = false;
-		for (int j = left; j < right; ++j)
-			if (a[j] > a[j + 1])
-			{
-				swapped = true;
-				HoanVi(a[j], a[j + 1]);
-				k = j;
-			}
-		if (!swapped)
-			return;
-		right = k;
-		swapped = false;
-		for (int j = right; j > left; --j)
-			if (a[j] < a[j - 1])
-			{
-				swapped = true;
-				HoanVi(a[j], a[j - 1]);
-				k = j;
-			}
-		if (!swapped)
-			return;
-		left = k;
-	}
+    int left = 0;
+    int right = n - 1;
+    int k = 0;
+    for (int i = left; i <= right; ++i)
+    {
+        bool swapped = false;
+        for (int j = left; j < right; ++j)
+            if (a[j] > a[j + 1])
+            {
+                swapped = true;
+                HoanVi(a[j], a[j + 1]);
+                k = j;
+            }
+        if (!swapped)
+            return;
+        right = k;
+        swapped = false;
+        for (int j = right; j > left; --j)
+            if (a[j] < a[j - 1])
+            {
+                swapped = true;
+                HoanVi(a[j], a[j - 1]);
+                k = j;
+            }
+        if (!swapped)
+            return;
+        left = k;
+    }
 }
-void ShakerSort_compare(int a[], int n,long long& count_compare)
+void ShakerSort_compare(int a[], int n, long long &count_compare)
 {
-	int left = 0;
-	int right = n - 1;
-	int k = 0;
-	for (int i = left;++count_compare && i <= right; ++i)
-	{
-		bool swapped = false;
-		for (int j = left;++count_compare && j < right; ++j)
-			if (++count_compare && a[j] > a[j + 1])
-			{
-				swapped = true;
-				HoanVi(a[j], a[j + 1]);
-				k = j;
-			}
-		if (!swapped)
-			return;
-		right = k;
-		swapped = false;
-		for (int j = right;++count_compare && j > left; --j)
-			if (++count_compare && a[j] < a[j - 1])
-			{
-				swapped = true;
-				HoanVi(a[j], a[j - 1]);
-				k = j;
-			}
-		if (++count_compare && !swapped)
-			return;
+    int left = 0;
+    int right = n - 1;
+    int k = 0;
+    for (int i = left; ++count_compare && i <= right; ++i)
+    {
+        bool swapped = false;
+        for (int j = left; ++count_compare && j < right; ++j)
+            if (++count_compare && a[j] > a[j + 1])
+            {
+                swapped = true;
+                HoanVi(a[j], a[j + 1]);
+                k = j;
+            }
+        if (!swapped)
+            return;
+        right = k;
+        swapped = false;
+        for (int j = right; ++count_compare && j > left; --j)
+            if (++count_compare && a[j] < a[j - 1])
+            {
+                swapped = true;
+                HoanVi(a[j], a[j - 1]);
+                k = j;
+            }
+        if (++count_compare && !swapped)
+            return;
 
-		left = k;
-	}
+        left = k;
+    }
 }
 
 // Merge Sort
 void Merge_time(int arr[], int left, int mid, int right)
 {
     int n1 = mid - left + 1;
-    int n2 =  right - mid;
- 
-    int* L = new int[n1];
-    int* R = new int [n2];
- 
+    int n2 = right - mid;
+
+    int *L = new int[n1];
+    int *R = new int[n2];
+
     for (int ii = 0; ii < n1; ++ii)
         L[ii] = arr[left + ii];
     for (int jj = 0; jj < n2; ++jj)
-        R[jj] = arr[mid + 1+ jj];
- 
+        R[jj] = arr[mid + 1 + jj];
+
     int i = 0;
     int j = 0;
     int k = left;
@@ -508,14 +489,14 @@ void Merge_time(int arr[], int left, int mid, int right)
         }
         ++k;
     }
- 
+
     while (i < n1)
     {
         arr[k] = L[i];
         ++i;
         ++k;
     }
- 
+
     while (j < n2)
     {
         arr[k] = R[j];
@@ -527,32 +508,32 @@ void MergeSort_time(int arr[], int left, int right)
 {
     if (left < right)
     {
-        int mid = left +(right -left)/2;
+        int mid = left + (right - left) / 2;
         MergeSort_time(arr, left, mid);
-        MergeSort_time(arr, ++mid , right);
+        MergeSort_time(arr, ++mid, right);
         Merge_time(arr, left, mid, right);
     }
 }
 
-void Merge_compare(int arr[], int left, int mid, int right,long long& count_compare)
+void Merge_compare(int arr[], int left, int mid, int right, long long &count_compare)
 {
     int n1 = mid - left + 1;
-    int n2 =  right - mid;
- 
-    int* L = new int[n1];
-    int* R = new int [n2];
- 
+    int n2 = right - mid;
+
+    int *L = new int[n1];
+    int *R = new int[n2];
+
     for (int ii = 0; ++count_compare && ii < n1; ++ii)
         L[ii] = arr[left + ii];
     for (int jj = 0; ++count_compare && jj < n2; ++jj)
-        R[jj] = arr[mid + 1+ jj];
- 
+        R[jj] = arr[mid + 1 + jj];
+
     int i = 0;
     int j = 0;
     int k = left;
     while (++count_compare && i < n1 && j < n2)
     {
-        ++count_compare ;
+        ++count_compare;
         if (++count_compare && L[i] <= R[j])
         {
             arr[k] = L[i];
@@ -565,14 +546,14 @@ void Merge_compare(int arr[], int left, int mid, int right,long long& count_comp
         }
         ++k;
     }
- 
+
     while (++count_compare && i < n1)
     {
         arr[k] = L[i];
         ++i;
         ++k;
     }
- 
+
     while (++count_compare && j < n2)
     {
         arr[k] = R[j];
@@ -580,13 +561,13 @@ void Merge_compare(int arr[], int left, int mid, int right,long long& count_comp
         ++k;
     }
 }
-void MergeSort_compare(int arr[], int left, int right,long long& count_compare)
+void MergeSort_compare(int arr[], int left, int right, long long &count_compare)
 {
     if (++count_compare && left < right)
     {
-        int mid = left +(right -left)/2;
+        int mid = left + (right - left) / 2;
         MergeSort_compare(arr, left, mid, count_compare);
-        MergeSort_compare(arr, ++mid , right, count_compare);
+        MergeSort_compare(arr, ++mid, right, count_compare);
         Merge_compare(arr, left, mid, right, count_compare);
     }
 }
@@ -594,37 +575,27 @@ void MergeSort_compare(int arr[], int left, int right,long long& count_compare)
 // Bubble Sort
 void BubbleSort_time(int a[], int n)
 {
-	for (int i = n - 1; i >= 0; --i)
-	{
-		bool swapped = false;
-		for (int j = 0; j < i; ++j)
-			if (a[j] > a[j + 1])
-			{
-				swapped = true;
-				HoanVi(a[j], a[j + 1]);
-			}
-		if (!swapped)
-			return;
-	}
+    for (int i = 0; i < n - 1; i++)
+    {
+        for (int j = 0; j < n - i - 1; j++){
+            if (a[j] > a[j + 1])
+                swap(a[j], a[j + 1]);
+        }
+    }
 }
-void BubbleSort_compare(int a[], int n,long long& count_compare)
+void BubbleSort_compare(int a[], int n, long long &count_compare)
 {
-	for (int i = n - 1;++count_compare && i >= 0; --i)
-	{
-		bool swapped = false;
-		for ( int j = 0;++count_compare && j < i; ++j)
-			if (++count_compare && a[j] > a[j + 1])
-			{
-				swapped = true;
-				HoanVi(a[j], a[j + 1]);
-			}
-		if (++count_compare && !swapped)
-			return;
-	}
+     for (int i = 0; ++count_compare && i < n - 1; i++)
+    {
+        for (int j = 0; ++count_compare && j < n - i - 1; j++){
+            if (++count_compare && a[j] > a[j + 1])
+                swap(a[j], a[j + 1]);
+        }
+    }
 }
 
 //SelectionSort
-void SelectionSort_compare(int* a, int n, long long& count_compare)
+void SelectionSort_compare(int *a, int n, long long &count_compare)
 {
     for (int i = 0; ++count_compare && i < n; i++)
     {
@@ -637,7 +608,7 @@ void SelectionSort_compare(int* a, int n, long long& count_compare)
         swap(a[i], a[mIndex]);
     }
 }
-void SelectionSort_time(int* a, int n)
+void SelectionSort_time(int *a, int n)
 {
     for (int i = 0; i < n; i++)
     {
@@ -652,13 +623,13 @@ void SelectionSort_time(int* a, int n)
 }
 
 //InsertionSort
-void InsertionSort_compare(int* a, int n, long long& count_compare)
+void InsertionSort_compare(int *a, int n, long long &count_compare)
 {
     for (int i = 1; ++count_compare && i < n; i++)
     {
         int k = i - 1;
         int key = a[i];
-        while (++count_compare && a[k] > key && ++count_compare && k >= 0)
+        while ((++count_compare && a[k] > key) && (++count_compare && k >= 0))
         {
             a[k + 1] = a[k];
             k--;
@@ -666,7 +637,7 @@ void InsertionSort_compare(int* a, int n, long long& count_compare)
         a[k + 1] = key;
     }
 }
-void InsertionSort_time(int* a, int n)
+void InsertionSort_time(int *a, int n)
 {
     for (int i = 1; i < n; i++)
     {
@@ -682,7 +653,7 @@ void InsertionSort_time(int* a, int n)
 }
 
 // Binary Insertion Sort
-void BinaryInsertionSort_time(int* a, int n)
+void BinaryInsertionSort_time(int *a, int n)
 {
     for (int i = 1; i < n; i++)
     {
@@ -696,15 +667,17 @@ void BinaryInsertionSort_time(int* a, int n)
             {
                 right = mid - 1;
             }
-            else left = mid + 1;
+            else
+                left = mid + 1;
         }
-        for (int j = i - 1; j >= left; j--) {
+        for (int j = i - 1; j >= left; j--)
+        {
             a[j + 1] = a[j];
         }
         a[left] = temp;
     }
 }
-void BinaryInsertionSort_compare(int* a, int n, long long& count_compare)
+void BinaryInsertionSort_compare(int *a, int n, long long &count_compare)
 {
     for (int i = 1; ++count_compare && i < n; i++)
     {
@@ -718,9 +691,11 @@ void BinaryInsertionSort_compare(int* a, int n, long long& count_compare)
             {
                 right = mid - 1;
             }
-            else left = mid + 1;
+            else
+                left = mid + 1;
         }
-        for (int j = i - 1; ++count_compare && j >= left; j--) {
+        for (int j = i - 1; ++count_compare && j >= left; j--)
+        {
             a[j + 1] = a[j];
         }
         a[left] = temp;

@@ -90,6 +90,11 @@ void showAlgorithm(string algo)
         cout << "Flash Sort";
         check = 1;
     }
+    if (algo == "binary-insertion-sort")
+    {
+        cout << "Binary Insertion Sort";
+        check = 1;
+    }
     if (check == 0)
         cout << "Error: unknown sorting algorithm!";
 }
@@ -121,13 +126,13 @@ void Output_res_algorithm(string para, double time, long long comp)
     switch (mode)
     {
     case 1:
-        cout << fixed << setprecision(3) << "Running time: " << time* 1000.0 << "ms" << endl;
+        cout << "Running time: " << time* 1000 << " ms" << endl;
         break;
     case 2:
         cout << "Comparisions: " << comp << endl;
         break;
     case 3:
-        cout << fixed << setprecision(3) << "Running time: " << time* 1000.0 << "ms" << endl;
+        cout << "Running time: " << time* 1000 << " ms" << endl;
         cout << "Comparisions: " << comp << endl;
         break;
     default:
@@ -149,13 +154,13 @@ void Output_res_compare(string para, double time1, long long comp1, double time2
     switch (mode)
     {
     case 1:
-        cout << fixed << setprecision(3) << "Running time: " << time1 * 1000.0 << "ms" << " | " << time2 * 1000.0 << "ms" << endl;
+        cout << "Running time: " << time1 * 1000 << " ms" << " | " << time2 * 1000 << " ms" << endl;
         break;
     case 2:
         cout << "Comparisions: " << comp1 << " | " << comp2 << endl;
         break;
     case 3:
-        cout << fixed << setprecision(3) << "Running time: " << time1* 1000.0 << "ms" << " | " << time2* 1000.0 << "s" << endl;
+        cout << "Running time: " << time1 * 1000 << " ms" << " | " << time2 * 1000 << " ms" << endl;
         cout << "Comparisions: " << comp1 << " | " << comp2 << endl;
         break;
     default:
@@ -170,12 +175,14 @@ void generate_input_Order(int *a, int n, string input_Order)
     int mode = -1;
     if (input_Order == "-rand")
         mode = 0;
-    if (input_Order == "-nsorted")
-        mode = 1;
     if (input_Order == "-sorted")
-        mode = 3;
+        mode = 1;
     if (input_Order == "-rev")
         mode = 2;
+    if (input_Order == "-nsorted")
+        mode = 3;
+    
+    
     GenerateData(a, n, mode);
     if (mode == -1)
         a = NULL;
@@ -186,7 +193,7 @@ void solveAlgoritm(string algo, int *a, int n, double &time, long long &cc, stri
     int mode = 0;
     if (algo == "selection-sort")
         mode = 1;
-    if (algo == "insertion-sort")
+    if (algo == "insertion-sort")//
         mode = 2;
     if (algo == "bubble-sort")
         mode = 3;
@@ -200,11 +207,11 @@ void solveAlgoritm(string algo, int *a, int n, double &time, long long &cc, stri
         mode = 7;
     if (algo == "quick-sort")
         mode = 8;
-    if (algo == "counting-sort")
+    if (algo == "counting-sort")//
         mode = 9;
     if (algo == "radix-sort")
         mode = 10;
-    if (algo == "flash-sort")
+    if (algo == "flash-sort") //
         mode = 11;
     if (algo == "binary-insertion-sort")
         mode = 12;
@@ -423,7 +430,7 @@ void _cmd_2(char *Algorithm, int input_size, string input_order, string Output_p
     delete[] a;
 }
 
-void _cmd_3(char *Algorithm, int input_size, string Output_parameter)
+void _cmd_3(char *Algorithm, int input_size, string Output_parameter)   
 {
     cout << "Algorithm: ";
     string algo(Algorithm);
@@ -529,6 +536,7 @@ void _cmd_5(char *Algorithm1, char *Algorithm2, int input_size, string input_ord
     delete[] a2;
 }
 
+// MODE function ------------------------------------------------------------------------------------------
 void _algorithm(char *algorithm, char *s1, char *s2, char *s3 = NULL)
 {
     if (s1[0] < '0' || s1[0] > '9')
